@@ -27,7 +27,6 @@ export default function Scan() {
   const [saved, setSaved]       = useState(false);
   const [activeTab, setActiveTab] = useState('info');
 
-  /* ─── detect multiple cameras ─── */
   useEffect(() => {
     navigator.mediaDevices?.enumerateDevices?.().then(devices => {
       const cams = devices.filter(d => d.kind === 'videoinput');
@@ -35,36 +34,26 @@ export default function Scan() {
     }).catch(() => {});
   }, []);
 
-  /* ─── stop stream helper ─── */
   const stopStream = useCallback((stream) => {
     if (stream) stream.getTracks().forEach(t => t.stop());
   }, []);
 
-  /* ─── cleanup on unmount ─── */
   useEffect(() => {
     return () => stopStream(camStream);
   }, [camStream, stopStream]);
 
-  /* ─── start camera ─── */
   const startCamera = useCallback(async (facing = facingMode) => {
     setCamError(''); setCamReady(false);
     stopStream(camStream);
-
     if (!navigator.mediaDevices?.getUserMedia) {
       setCamError('Browser Anda tidak mendukung akses kamera. Gunakan Chrome/Firefox terbaru.');
       return;
     }
-
     try {
-      const constraints = {
-        video: {
-          facingMode: facing,
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } },
         audio: false,
-      };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      });
       setCamStream(stream);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -84,23 +73,19 @@ export default function Scan() {
     }
   }, [camStream, facingMode, stopStream]);
 
-  /* ─── switch facing ─── */
   const switchCamera = async () => {
     const next = facingMode === 'environment' ? 'user' : 'environment';
     setFacingMode(next);
     await startCamera(next);
   };
 
-  /* ─── capture photo from video ─── */
   const capturePhoto = () => {
     const video  = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
-
     canvas.width  = video.videoWidth  || 1280;
     canvas.height = video.videoHeight || 720;
     canvas.getContext('2d').drawImage(video, 0, 0);
-
     canvas.toBlob(blob => {
       if (!blob) return;
       const file = new File([blob], `kamera_${Date.now()}.jpg`, { type: 'image/jpeg' });
@@ -108,14 +93,12 @@ export default function Scan() {
       setPreview(URL.createObjectURL(file));
       setFileName(file.name);
       setResult(null); setError(''); setSaved(false);
-      // stop stream & stay on camera mode to show preview
       stopStream(camStream);
       setCamStream(null);
       setCamReady(false);
     }, 'image/jpeg', 0.92);
   };
 
-  /* ─── switch mode ─── */
   const switchMode = (m) => {
     if (m === mode) return;
     stopStream(camStream);
@@ -127,7 +110,6 @@ export default function Scan() {
     }
   };
 
-  /* ─── file upload ─── */
   const handleFile = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -147,7 +129,6 @@ export default function Scan() {
     setResult(null); setError(''); setSaved(false);
   };
 
-  /* ─── analyze ─── */
   const handleAnalyze = async () => {
     if (!imageFile) return;
     setLoading(true); setError(''); setResult(null); setSaved(false);
@@ -168,7 +149,6 @@ export default function Scan() {
     }
   };
 
-  /* ─── reset ─── */
   const resetAll = () => {
     stopStream(camStream);
     setCamStream(null); setCamReady(false); setCamError('');
@@ -181,43 +161,53 @@ export default function Scan() {
   const info = result ? (DISEASE_INFO[result.diagnosis] || DISEASE_INFO.sehat) : null;
 
   return (
-    <div className="page-shell compact-page">
+    <div className="page-shell">
       <Navbar />
       <main className="scan-main">
-        <h1>Deteksi Penyakit</h1>
-        <p>Unggah gambar atau gunakan kamera untuk mendeteksi penyakit pada daun padi.</p>
 
-        <div className="scan-box">
-          {/* ── MODE TABS ── */}
-          <div className="scan-tabs">
+        {/* ── HEADER ── */}
+        <div className="scan-header">
+          <div className="scan-header-icon">
+            <i className="ph ph-leaf"></i>
+          </div>
+          <div>
+            <h1>Deteksi Penyakit Padi</h1>
+            <p>Analisis cerdas berbasis AI untuk mendeteksi penyakit pada daun padi secara akurat.</p>
+          </div>
+        </div>
+
+        {/* ── MAIN SCAN BOX ── */}
+        <div className="scan-box-v2">
+
+          {/* ── MODE SELECTOR: modern pill tabs ── */}
+          <div className="scan-mode-selector">
             <button
               type="button"
-              className={mode === MODE.UPLOAD ? 'active' : ''}
+              className={`scan-mode-btn ${mode === MODE.UPLOAD ? 'active' : ''}`}
               onClick={() => switchMode(MODE.UPLOAD)}
             >
-              <i className="bi bi-upload"></i> Upload Gambar
+              <span className="scan-mode-icon"><i className="ph ph-image-square"></i></span>
+              <span className="scan-mode-label">
+                <span className="scan-mode-title">Unggah Gambar</span>
+                <span className="scan-mode-sub">jpg, png, webp</span>
+              </span>
             </button>
             <button
               type="button"
-              className={mode === MODE.CAMERA ? 'active' : ''}
+              className={`scan-mode-btn ${mode === MODE.CAMERA ? 'active' : ''}`}
               onClick={() => switchMode(MODE.CAMERA)}
             >
-              <i className="bi bi-camera"></i> Kamera
+              <span className="scan-mode-icon"><i className="ph ph-camera"></i></span>
+              <span className="scan-mode-label">
+                <span className="scan-mode-title">Kamera Langsung</span>
+                <span className="scan-mode-sub">foto real-time</span>
+              </span>
             </button>
-            {preview && (
-              <button
-                type="button"
-                onClick={resetAll}
-                style={{ marginLeft:'auto', color:'#dc2626', background:'none', border:'none', fontSize:'13px', cursor:'pointer' }}
-              >
-                <i className="bi bi-x-circle"></i> Hapus
-              </button>
-            )}
           </div>
 
-          {/* ════════════ UPLOAD PANEL ════════════ */}
+          {/* ════════ UPLOAD PANEL ════════ */}
           {mode === MODE.UPLOAD && (
-            <>
+            <div className="scan-upload-area">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -225,107 +215,151 @@ export default function Scan() {
                 onChange={handleFile}
                 hidden
               />
-              <button
-                className={`drop-area ${preview ? 'has-preview' : ''}`}
-                type="button"
-                onClick={() => !preview && fileInputRef.current?.click()}
-                onDragOver={e => e.preventDefault()}
-                onDrop={handleDrop}
-              >
-                {preview ? (
-                  <><img src={preview} alt="Preview daun padi" /><span>{fileName}</span></>
-                ) : (
-                  <>
-                    <div className="upload-circle"><i className="bi bi-cloud-arrow-up"></i></div>
-                    <b>Drag & drop gambar di sini, atau klik untuk memilih</b>
-                    <span>Mendukung *.jpeg, *.png, *.webp</span>
+              {preview ? (
+                <div className="scan-preview-container">
+                  <div className="scan-preview-img-wrap">
+                    <img src={preview} alt="Preview daun padi" className="scan-preview-img" />
+                    <div className="scan-preview-badge">
+                      <i className="ph ph-check-circle"></i> Siap dianalisis
+                    </div>
+                  </div>
+                  <div className="scan-preview-info">
+                    <i className="ph ph-file-image"></i>
+                    <span>{fileName}</span>
                     <button
-                      className="btn btn-sm btn-outline-success mt-3"
+                      className="scan-change-btn"
+                      onClick={() => { setPreview(''); setImageFile(null); setFileName(''); setResult(null); }}
+                    >
+                      <i className="ph ph-pencil"></i> Ganti
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="scan-dropzone"
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={handleDrop}
+                >
+                  <div className="scan-dropzone-inner">
+                    <div className="scan-drop-icon">
+                      <i className="ph ph-cloud-arrow-up"></i>
+                    </div>
+                    <h4>Drag & drop foto daun padi</h4>
+                    <p>atau pilih file dari perangkat Anda</p>
+                    <button
+                      className="scan-file-btn"
                       type="button"
                       onClick={e => { e.stopPropagation(); fileInputRef.current?.click(); }}
                     >
-                      <i className="bi bi-folder2-open me-1"></i>Pilih File
+                      <i className="ph ph-folder-open"></i>
+                      Pilih File
                     </button>
-                  </>
-                )}
-              </button>
-            </>
+                    <span className="scan-format-hint">Mendukung *.jpeg · *.png · *.webp</span>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
 
-          {/* ════════════ CAMERA PANEL ════════════ */}
+          {/* ════════ CAMERA PANEL ════════ */}
           {mode === MODE.CAMERA && (
-            <div className="camera-panel">
-              {/* Preview setelah capture */}
+            <div className="scan-camera-area">
+              {/* After capture preview */}
               {preview && !camReady ? (
-                <div className="cam-preview-wrap">
-                  <img src={preview} alt="Foto dari kamera" className="cam-captured-img" />
-                  <span className="cam-captured-label"><i className="bi bi-camera-fill me-1"></i>{fileName}</span>
-                  <button
-                    className="btn btn-sm btn-outline-secondary mt-2"
-                    type="button"
-                    onClick={() => {
-                      setPreview(''); setFileName(''); setImageFile(null);
-                      startCamera();
-                    }}
-                  >
-                    <i className="bi bi-arrow-repeat me-1"></i>Ambil Ulang
-                  </button>
+                <div className="scan-cam-captured">
+                  <img src={preview} alt="Foto dari kamera" />
+                  <div className="scan-cam-captured-info">
+                    <i className="ph ph-camera-fill"></i>
+                    <span>{fileName}</span>
+                    <button
+                      className="scan-change-btn"
+                      type="button"
+                      onClick={() => { setPreview(''); setFileName(''); setImageFile(null); startCamera(); }}
+                    >
+                      <i className="ph ph-arrow-clockwise"></i> Ulangi
+                    </button>
+                  </div>
                 </div>
               ) : !camStream ? (
-                /* Start screen */
-                <div className="cam-start-screen">
-                  <div className="cam-start-icon"><i className="bi bi-camera"></i></div>
-                  <p className="cam-start-title">Gunakan Kamera</p>
-                  <p className="cam-start-desc">Arahkan kamera ke daun padi untuk analisis langsung</p>
+                /* Camera start screen */
+                <div className="scan-cam-start">
+                  <div className="scan-cam-start-icon">
+                    <i className="ph ph-camera"></i>
+                  </div>
+                  <h4>Kamera Real-Time</h4>
+                  <p>Arahkan kamera langsung ke daun padi untuk mendeteksi penyakit secara instan</p>
                   {camError && (
-                    <div className="alert alert-warning py-2 small mb-3" style={{textAlign:'left'}}>
-                      <i className="bi bi-exclamation-triangle me-1"></i>{camError}
+                    <div className="scan-cam-error">
+                      <i className="ph ph-warning"></i> {camError}
                     </div>
                   )}
-                  <button className="btn btn-dark" type="button" onClick={() => startCamera()}>
-                    <i className="bi bi-camera-fill me-2"></i>Aktifkan Kamera
+                  <button
+                    className="scan-cam-activate-btn"
+                    type="button"
+                    onClick={() => startCamera()}
+                  >
+                    <i className="ph ph-camera-fill"></i>
+                    Aktifkan Kamera
                   </button>
                 </div>
               ) : (
-                /* Live viewfinder */
-                <div className="cam-viewfinder">
+                /* Live viewfinder — modern style */
+                <div className="scan-viewfinder-wrap">
+                  {/* Video feed */}
                   <video
                     ref={videoRef}
                     autoPlay
                     playsInline
                     muted
-                    className="cam-video"
+                    className="scan-video"
                   />
-                  {/* scan frame overlay */}
-                  <div className="cam-frame-overlay">
-                    <div className="cam-frame-box">
-                      <span className="cam-frame-hint">
-                        {camReady ? 'Posisikan daun di dalam bingkai' : 'Memuat kamera...'}
-                      </span>
+
+                  {/* Corner frame overlay */}
+                  <div className="scan-frame-overlay">
+                    <div className="scan-frame-box">
+                      <span className="scan-frame-corner tl"></span>
+                      <span className="scan-frame-corner tr"></span>
+                      <span className="scan-frame-corner bl"></span>
+                      <span className="scan-frame-corner br"></span>
+                      {camReady && <div className="scan-frame-scan-line"></div>}
+                    </div>
+                    <div className="scan-frame-hint">
+                      <i className="ph ph-leaf"></i>
+                      {camReady ? 'Posisikan daun di dalam bingkai' : 'Memuat kamera...'}
                     </div>
                   </div>
-                  <div className="cam-controls">
-                    {hasMultiCam && (
-                      <button className="cam-ctrl-btn" type="button" onClick={switchCamera} title="Balik kamera">
-                        <i className="bi bi-arrow-repeat"></i>
+
+                  {/* Camera controls — bottom row */}
+                  <div className="scan-cam-controls">
+                    {/* Switch camera */}
+                    {hasMultiCam ? (
+                      <button className="scan-cam-ctrl" type="button" onClick={switchCamera} title="Balik kamera">
+                        <i className="ph ph-camera-rotate"></i>
                       </button>
-                    )}
+                    ) : <span />}
+
+                    {/* Shutter — center */}
                     <button
-                      className="cam-shutter-btn"
+                      className="scan-shutter"
                       type="button"
                       onClick={capturePhoto}
                       disabled={!camReady}
                       title="Ambil foto"
                     >
-                      <span className="cam-shutter-inner"></span>
+                      <span className="scan-shutter-ring">
+                        <span className="scan-shutter-dot"></span>
+                      </span>
                     </button>
+
+                    {/* Close camera */}
                     <button
-                      className="cam-ctrl-btn cam-ctrl-stop"
+                      className="scan-cam-ctrl scan-cam-ctrl-close"
                       type="button"
                       onClick={() => { stopStream(camStream); setCamStream(null); setCamReady(false); }}
                       title="Tutup kamera"
                     >
-                      <i className="bi bi-x-lg"></i>
+                      <i className="ph ph-x"></i>
                     </button>
                   </div>
                 </div>
@@ -334,23 +368,34 @@ export default function Scan() {
             </div>
           )}
 
+          {/* ── ERROR ── */}
           {error && (
-            <div className="alert alert-danger py-2 small mt-2">
-              <i className="bi bi-exclamation-circle me-1"></i>{error}
+            <div className="scan-error-msg">
+              <i className="ph ph-warning-circle"></i> {error}
             </div>
           )}
 
-          <button
-            className="analyze-btn"
-            type="button"
-            disabled={!imageFile || loading}
-            onClick={handleAnalyze}
-          >
-            {loading
-              ? <><span className="spinner-border spinner-border-sm me-2"></span>Menganalisis...</>
-              : <><i className="bi bi-search me-2"></i>Mulai Analisa</>
-            }
-          </button>
+          {/* ── ANALYZE BUTTON & RESET ── */}
+          <div className="scan-action-row">
+            {(imageFile || preview) && (
+              <button className="scan-reset-btn" type="button" onClick={resetAll}>
+                <i className="ph ph-trash"></i>
+                Hapus
+              </button>
+            )}
+            <button
+              className="scan-analyze-btn"
+              type="button"
+              disabled={!imageFile || loading}
+              onClick={handleAnalyze}
+              style={{ flex: 1 }}
+            >
+              {loading
+                ? <><span className="spinner-border spinner-border-sm me-2"></span>Menganalisis AI...</>
+                : <><i className="ph ph-magnifying-glass me-2"></i>Mulai Analisa</>
+              }
+            </button>
+          </div>
         </div>
 
         {/* ════════════ HASIL DETEKSI ════════════ */}
