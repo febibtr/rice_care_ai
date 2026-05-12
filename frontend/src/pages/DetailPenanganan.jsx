@@ -3,65 +3,94 @@ import Navbar from '../components/Navbar.jsx';
 import { DISEASE_INFO } from '../services/aiService';
 import farmBg from '../assets/fram-padi.jpg';
 
+const Footer = () => (
+  <footer className="footer-box">
+    <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
+      <p className="footer-copy">© 2025 RiceCare AI — Powered by MobileNetV2 & Claude AI</p>
+    </div>
+  </footer>
+);
+
+const sevConfig = {
+  none:   { label:'Tidak Ada Penyakit', color:'#16a34a', bg:'#f0fdf4' },
+  low:    { label:'Risiko Rendah',      color:'#16a34a', bg:'#f0fdf4' },
+  medium: { label:'Risiko Sedang',      color:'#d97706', bg:'#fffbeb' },
+  high:   { label:'Risiko Tinggi',      color:'#dc2626', bg:'#fef2f2' },
+};
+
 export default function DetailPenanganan() {
   const { state } = useLocation();
   const navigate = useNavigate();
-
-  // Gunakan data dari state navigasi, atau fallback ke brownspot
   const disease = state?.disease || { key: 'brownspot', ...DISEASE_INFO.brownspot };
   const info = DISEASE_INFO[disease.key] || DISEASE_INFO.brownspot;
-
   const treatments = disease.treatments?.length ? disease.treatments : info.treatments;
   const preventions = disease.preventions?.length ? disease.preventions : info.preventions;
   const description = disease.description || info.description;
-
-  const severityColor = { none: '#16a34a', low: '#16a34a', medium: '#d97706', high: '#dc2626' };
-  const color = severityColor[disease.severity] || '#16a34a';
+  const sev = sevConfig[disease.severity] || sevConfig.low;
 
   return (
     <div className="page-shell">
       <Navbar />
       <main className="detail-main">
+        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:24}}>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            style={{display:'flex',alignItems:'center',gap:7,background:'var(--off-white)',border:'1.5px solid var(--gray-200)',borderRadius:'var(--radius-pill)',padding:'8px 16px',fontSize:13,fontWeight:700,cursor:'pointer',color:'var(--black)'}}
+          >
+            <i className="ph ph-arrow-left"></i> Kembali
+          </button>
+          <div style={{fontSize:12,color:'var(--gray-400)'}}>Penanganan / {disease.name}</div>
+        </div>
 
-        <h1>Solusi Penanganan Penyakit</h1>
+        <h1>Solusi Penanganan</h1>
         <div className="detail-layout">
           <div className="detail-image-card">
             <img src={farmBg} alt={disease.name} />
-            <div style={{padding:'16px 0 0'}}>
-              <h2 style={{margin:'8px 0 4px',fontSize:22}}>{disease.name || info.label}</h2>
-              <span style={{background:`${color}18`,color,borderRadius:100,padding:'3px 12px',fontSize:12,fontWeight:700}}>
-                {disease.severity === 'high' ? 'Risiko Tinggi' : disease.severity === 'medium' ? 'Risiko Sedang' : disease.severity === 'none' ? 'Tidak ada penyakit' : 'Risiko Rendah'}
+            <div>
+              <h2 style={{fontSize:22,fontWeight:800,marginTop:8,marginBottom:6}}>{disease.name || info.label}</h2>
+              <span style={{background:sev.bg,color:sev.color,borderRadius:'var(--radius-pill)',padding:'4px 14px',fontSize:12,fontWeight:700,display:'inline-flex',alignItems:'center',gap:5}}>
+                <i className="ph ph-warning"></i> {sev.label}
               </span>
-              {disease.latinName && <p style={{fontSize:12,color:'#6b7c6b',fontStyle:'italic',marginTop:8}}>{disease.latinName}</p>}
+              {disease.latinName && <p style={{fontSize:12,color:'var(--gray-400)',fontStyle:'italic',marginTop:10}}>{disease.latinName}</p>}
+
+              {/* Quick links
+              <div style={{marginTop:20,display:'flex',flexDirection:'column',gap:8}}>
+                {['Penjelasan','Penanganan','Pencegahan'].map((l,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:600,color:'var(--green-700)'}}>
+                    <i className="ph ph-check-circle" style={{color:'var(--green-500)'}}></i> {l} tersedia
+                  </div>
+                ))}
+              </div> */}
             </div>
           </div>
 
           <div className="detail-content-card">
             <section>
-              <h3><i className="bi bi-leaf-fill"></i> Penjelasan</h3>
+              <h3><i className="ph ph-leaf-fill"></i> Penjelasan</h3>
               <p>{description}</p>
             </section>
 
             {disease.symptoms?.length > 0 && (
               <section>
-                <h3><i className="bi bi-exclamation-triangle-fill"></i> Gejala</h3>
+                <h3><i className="ph ph-warning-circle"></i> Gejala</h3>
                 <ul>{disease.symptoms.map((s, i) => <li key={i}>{s}</li>)}</ul>
               </section>
             )}
 
             <section>
-              <h3><i className="bi bi-shield-fill-plus"></i> Penanganan</h3>
+              <h3><i className="ph ph-first-aid"></i> Langkah Penanganan</h3>
               <ol>{treatments.map((t, i) => <li key={i}>{t}</li>)}</ol>
             </section>
 
             <section>
-              <h3><i className="bi bi-shield-check"></i> Pencegahan</h3>
+              <h3><i className="ph ph-shield-check"></i> Pencegahan</h3>
               <ul>{preventions.map((p, i) => <li key={i}>{p}</li>)}</ul>
             </section>
           </div>
         </div>
       </main>
-      <footer className="footer-box"><p><b>© RiceCareAi</b> - Powered by MobileNetV2 & Claude AI</p></footer>
+      <Footer />
     </div>
   );
 }

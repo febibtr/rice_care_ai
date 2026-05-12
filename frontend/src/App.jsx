@@ -7,6 +7,7 @@ import Scan from './pages/Scan.jsx';
 import Riwayat from './pages/Riwayat.jsx';
 import Penanganan from './pages/Penanganan.jsx';
 import DetailPenanganan from './pages/DetailPenanganan.jsx';
+import Profil from './pages/Profil.jsx';
 
 function ProtectedPage({ children }) {
   const isLoggedIn = localStorage.getItem('ricecare_auth') === 'true';
@@ -24,6 +25,7 @@ export default function App() {
       <Route path="/riwayat" element={<ProtectedPage><Riwayat /></ProtectedPage>} />
       <Route path="/penanganan" element={<ProtectedPage><Penanganan /></ProtectedPage>} />
       <Route path="/penanganan/detail" element={<ProtectedPage><DetailPenanganan /></ProtectedPage>} />
+      <Route path="/profil" element={<ProtectedPage><Profil /></ProtectedPage>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

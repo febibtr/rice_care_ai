@@ -5,6 +5,14 @@ import { DISEASE_INFO } from '../services/aiService';
 
 const BASE_URL = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:5000';
 
+const Footer = () => (
+  <footer className="footer-box">
+    <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
+      <p className="footer-copy">© 2025 RiceCare AI — Powered by MobileNetV2 & Claude AI</p>
+    </div>
+  </footer>
+);
+
 export default function Riwayat() {
   const [scans, setScans] = useState([]);
   const [meta, setMeta] = useState({ page: 1, total: 0, totalPages: 1 });
@@ -21,9 +29,7 @@ export default function Riwayat() {
       setScans(data); setMeta(m);
     } catch (err) {
       setError('Gagal memuat riwayat: ' + (err.response?.data?.message || err.message));
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }, [page, filterDiagnosis]);
 
   useEffect(() => { fetchScans(); }, [fetchScans]);
@@ -35,61 +41,105 @@ export default function Riwayat() {
       await deleteScan(id);
       setScans(prev => prev.filter(s => s._id !== id));
       setMeta(prev => ({ ...prev, total: prev.total - 1 }));
-    } catch {
-      alert('Gagal menghapus scan.');
-    } finally { setDeleting(null); }
+    } catch { alert('Gagal menghapus scan.'); }
+    finally { setDeleting(null); }
   };
 
   const handleFilterChange = (d) => { setFilterDiagnosis(d); setPage(1); };
+
+  const filterOptions = [
+    { key: '', label: 'Semua Scan', icon: 'ph-list' },
+    { key: 'sehat', label: DISEASE_INFO.sehat?.emoji + ' Sehat', icon: 'ph-leaf' },
+    { key: 'blast', label: DISEASE_INFO.blast?.emoji + ' Blast', icon: 'ph-warning' },
+    { key: 'tungro', label: DISEASE_INFO.tungro?.emoji + ' Tungro', icon: 'ph-bug' },
+    { key: 'brownspot', label: DISEASE_INFO.brownspot?.emoji + ' Brown Spot', icon: 'ph-circle-dashed' },
+  ];
 
   return (
     <div className="page-shell">
       <Navbar />
       <main className="cards-main">
-        <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-          <h1 className="mb-0">Riwayat Deteksi</h1>
-          <span className="text-muted small">Total: <b>{meta.total}</b> scan</span>
+        <div className="page-header">
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+            <div>
+              <div className="section-label" style={{marginBottom:8}}>
+                <i className="ph ph-clock-counter-clockwise"></i> Riwayat
+              </div>
+              <h1>Riwayat Deteksi</h1>
+              <p style={{color:'var(--gray-600)',fontSize:14,marginTop:4}}>
+                Total <b style={{color:'var(--green-600)'}}>{meta.total}</b> hasil scan tersimpan
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Filter */}
-        <div className="d-flex gap-2 flex-wrap mb-4">
-          {['', 'sehat', 'blast', 'tungro', 'brownspot'].map(d => (
-            <button key={d} type="button"
-              className={`btn btn-sm ${filterDiagnosis === d ? 'btn-dark' : 'btn-outline-secondary'}`}
-              onClick={() => handleFilterChange(d)}>
-              {d ? (DISEASE_INFO[d]?.emoji + ' ' + DISEASE_INFO[d]?.label) : 'Semua'}
+        {/* Filters */}
+        <div className="filter-chips">
+          {filterOptions.map(f => (
+            <button
+              key={f.key}
+              className={`filter-chip ${filterDiagnosis === f.key ? 'active' : ''}`}
+              onClick={() => handleFilterChange(f.key)}
+              type="button"
+            >
+              <i className={`ph ${f.icon}`}></i> {f.label}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <div className="text-center py-5"><span className="spinner-border text-success"></span><p className="mt-2 text-muted small">Memuat riwayat...</p></div>
+          <div className="loading-state">
+            <div className="loading-ring"></div>
+            <p style={{color:'var(--gray-600)',fontSize:14,fontWeight:600}}>Memuat riwayat...</p>
+          </div>
         ) : error ? (
-          <div className="alert alert-danger">{error} <button className="btn btn-sm btn-outline-danger ms-2" onClick={fetchScans}>Coba lagi</button></div>
+          <div style={{display:'flex',alignItems:'center',gap:10,background:'#fef2f2',border:'1.5px solid #fca5a5',color:'#dc2626',borderRadius:'var(--radius-lg)',padding:'16px 20px',fontSize:14,fontWeight:600}}>
+            <i className="ph ph-warning-circle" style={{fontSize:20}}></i>
+            {error}
+            <button style={{marginLeft:'auto',background:'transparent',border:'1.5px solid #dc2626',color:'#dc2626',borderRadius:'var(--radius-pill)',padding:'6px 14px',fontSize:13,fontWeight:700,cursor:'pointer'}} onClick={fetchScans}>Coba Lagi</button>
+          </div>
         ) : scans.length === 0 ? (
-          <div className="text-center py-5 text-muted">
-            <i className="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+          <div className="empty-state">
+            <i className="ph ph-inbox" style={{fontSize:56,color:'var(--gray-200)',display:'block',marginBottom:16}}></i>
             <p>Belum ada riwayat scan{filterDiagnosis ? ` untuk "${DISEASE_INFO[filterDiagnosis]?.label}"` : ''}.</p>
+            <a href="/scan" style={{display:'inline-flex',alignItems:'center',gap:7,background:'var(--green-500)',color:'#fff',borderRadius:'var(--radius-pill)',padding:'10px 22px',fontSize:14,fontWeight:800,marginTop:16,textDecoration:'none'}}>
+              <i></i> Mulai Scan
+            </a>
           </div>
         ) : (
-          <div className="result-grid history-grid">
+          <div className="result-grid">
             {scans.map((scan) => {
               const info = DISEASE_INFO[scan.diagnosis] || DISEASE_INFO.sehat;
               const imgUrl = scan.imageUrl ? `${BASE_URL}${scan.imageUrl}` : null;
               return (
-                <div className="result-card" key={scan._id} style={{position:'relative'}}>
+                <div className="result-card" key={scan._id}>
                   {imgUrl
-                    ? <img src={imgUrl} alt={info.label} style={{objectFit:'cover'}} onError={e => e.target.style.display='none'} />
-                    : <div style={{height:140,background:'#f1f5f1',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32}}>{info.emoji}</div>
+                    ? <img src={imgUrl} alt={info.label} onError={e => e.target.style.display='none'} />
+                    : <div style={{height:160,background:'var(--green-50)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:40}}>{info.emoji}</div>
                   }
-                  <h3>{info.emoji} {info.label}</h3>
-                  <span className="confidence">{Math.round(scan.topConfidence)}% Keyakinan</span>
-                  <span className="d-block text-muted" style={{fontSize:'11px',marginTop:2}}>
-                    {new Date(scan.createdAt).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}
-                  </span>
-                  <button className="btn btn-sm btn-outline-danger mt-2 w-100" onClick={() => handleDelete(scan._id)} disabled={deleting === scan._id}>
-                    {deleting === scan._id ? <span className="spinner-border spinner-border-sm"></span> : <><i className="bi bi-trash me-1"></i>Hapus</>}
-                  </button>
+                  <div className="result-card-body">
+                    <h3>{info.emoji} {info.label}</h3>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+                      <span className="confidence">
+                        <i className="ph ph-chart-bar"></i> {Math.round(scan.topConfidence)}% Keyakinan
+                      </span>
+                    </div>
+                    <span style={{fontSize:12,color:'var(--gray-400)',display:'flex',alignItems:'center',gap:5}}>
+                      <i className="ph ph-calendar-blank"></i>
+                      {new Date(scan.createdAt).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}
+                    </span>
+                    <button
+                      style={{marginTop:'auto',paddingTop:12,display:'flex',alignItems:'center',gap:6,background:'transparent',border:'1.5px solid #fca5a5',color:'#e03c3c',borderRadius:'var(--radius-pill)',padding:'8px 16px',fontSize:12,fontWeight:700,cursor:'pointer',transition:'var(--transition)',width:'100%',justifyContent:'center',marginTop:14}}
+                      onClick={() => handleDelete(scan._id)}
+                      disabled={deleting === scan._id}
+                      type="button"
+                    >
+                      {deleting === scan._id
+                        ? <span className="spinner-border spinner-border-sm"></span>
+                        : <><i className="ph ph-trash"></i> Hapus</>
+                      }
+                    </button>
+                  </div>
                 </div>
               );
             })}
@@ -98,14 +148,20 @@ export default function Riwayat() {
 
         {/* Pagination */}
         {meta.totalPages > 1 && (
-          <div className="d-flex justify-content-center gap-2 mt-4">
-            <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>‹ Prev</button>
-            <span className="btn btn-sm disabled">Hal {page} / {meta.totalPages}</span>
-            <button className="btn btn-outline-secondary btn-sm" disabled={page >= meta.totalPages} onClick={() => setPage(p => p + 1)}>Next ›</button>
+          <div className="pagination-row">
+            <button className="page-btn" disabled={page <= 1} onClick={() => setPage(p => p-1)} type="button">
+              <i className="ph ph-caret-left"></i>
+            </button>
+            {Array.from({length: meta.totalPages}, (_, i) => i+1).map(p => (
+              <button key={p} className={`page-btn ${page===p?'active':''}`} onClick={()=>setPage(p)} type="button">{p}</button>
+            ))}
+            <button className="page-btn" disabled={page >= meta.totalPages} onClick={() => setPage(p => p+1)} type="button">
+              <i className="ph ph-caret-right"></i>
+            </button>
           </div>
         )}
       </main>
-      <footer className="footer-box"><p><b>© RiceCareAi</b> - Powered by MobileNetV2 & Claude AI</p></footer>
+      <Footer />
     </div>
   );
 }
