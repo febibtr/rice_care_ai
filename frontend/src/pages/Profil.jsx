@@ -41,15 +41,16 @@ export default function Profil() {
     if (!form.name || !form.email) { setError('Nama dan email wajib diisi.'); return; }
     setLoading(true);
     try {
-      // Simpan ke localStorage (update lokal), dan coba hit API jika tersedia
-      const stored = JSON.parse(localStorage.getItem('ricecare_user') || '{}');
-      const updated = { ...stored, name: form.name, email: form.email };
-      localStorage.setItem('ricecare_user', JSON.stringify(updated));
-      // Coba update via API
-      try { await api.put('/auth/me', { name: form.name, email: form.email }); } catch(_){}
+      const { data } = await api.patch('/users/profile', {
+        name: form.name,
+        email: form.email,
+      });
+      const updatedUser = data.data?.user || { name: form.name, email: form.email };
+      localStorage.setItem('ricecare_user', JSON.stringify(updatedUser));
+      setForm((prev) => ({ ...prev, name: updatedUser.name, email: updatedUser.email }));
       setSuccess('Profil berhasil diperbarui!');
-    } catch {
-      setError('Gagal memperbarui profil.');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Gagal memperbarui profil.');
     } finally { setLoading(false); }
   };
 
@@ -61,8 +62,8 @@ export default function Profil() {
     if (passForm.newPassword !== passForm.confirmPassword) { setPassError('Konfirmasi password tidak cocok.'); return; }
     setPassLoading(true);
     try {
-      await api.put('/auth/change-password', {
-        currentPassword: passForm.currentPassword,
+      await api.patch('/auth/change-password', {
+        oldPassword: passForm.currentPassword,
         newPassword: passForm.newPassword
       });
       setPassSuccess('Password berhasil diubah!');

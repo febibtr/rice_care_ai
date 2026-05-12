@@ -34,7 +34,7 @@ export default function Register() {
           </div>
         </div>
         <div>
-          <h1>Bergabung<br/>Bersama Kami 🌱</h1>
+          <h1>Bergabung<br/>Bersama Kami</h1>
           <h4>Buat Akun Baru</h4>
           <p>Mulai gunakan RiceCare AI untuk membantu pemeriksaan dan perawatan tanaman padi Anda.</p>
           <div style={{marginTop:28,display:'flex',flexDirection:'column',gap:10}}>

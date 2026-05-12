@@ -28,7 +28,7 @@ const getProfile = async (req, res, next) => {
  */
 const updateProfile = async (req, res, next) => {
   try {
-    const allowedFields = ['name'];
+    const allowedFields = ['name', 'email'];
     const updates = {};
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) updates[field] = req.body[field];
@@ -45,6 +45,9 @@ const updateProfile = async (req, res, next) => {
 
     return successResponse(res, { user: user.toPublicJSON() }, 'Profil berhasil diperbarui');
   } catch (error) {
+    if (error.code === 11000 && error.keyValue?.email) {
+      return errorResponse(res, 'Email sudah digunakan', 400);
+    }
     next(error);
   }
 };

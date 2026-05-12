@@ -42,7 +42,7 @@ const scanSchema = new mongoose.Schema(
       required: true,
     },
     aiNotes: {
-      type: String, // catatan dari Claude AI
+      type: String,
       default: null,
     },
     inferenceTimeMs: {

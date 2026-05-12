@@ -1,1 +1,17 @@
+# Ignore frontend dependencies
 /frontend/node_modules
+
+# Ignore backend dependencies
+/backend/node_modules
+
+# Backend environment and uploads
+/backend/.env
+/backend/uploads/*
+!/backend/uploads/.gitkeep
+/backend/logs/
+/backend/*.log
+/backend/dist/
+/backend/coverage/
+
+# General ignores
+.DS_Store

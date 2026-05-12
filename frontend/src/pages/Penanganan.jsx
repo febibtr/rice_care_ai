@@ -7,7 +7,7 @@ import { DISEASE_INFO } from '../services/aiService';
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI — Powered by MobileNetV2 & Claude AI</p>
+      <p className="footer-copy">© 2025 RiceCare AI — Powered by</p>
     </div>
   </footer>
 );
@@ -60,22 +60,29 @@ export default function Penanganan() {
           <div className="result-grid">
             {diseases.map((disease) => {
               const sev = severityConfig[disease.severity] || severityConfig.low;
+              const info = DISEASE_INFO[disease.key] || DISEASE_INFO.sehat;
               return (
                 <button
                   className="treatment-card"
                   key={disease.key}
-                  onClick={() => navigate('/penanganan/detail', { state: { disease } })}
+                  onClick={() => navigate('/penanganan/detail', { state: { disease: { ...disease, ...info } } })}
                   type="button"
                   style={{borderTop:`3px solid ${sev.color}`}}
                 >
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+                  <div className="treatment-card-media" style={{ background: info.cardGradient || 'linear-gradient(135deg, rgba(22,163,74,.9), rgba(74,222,128,.9))' }}>
+                    <div className="treatment-card-media-icon" style={{ background: info.iconBg || 'rgba(255,255,255,.18)' }}>
+                      <i className={`ph ${info.icon || 'ph-leaf'}`} style={{ color: info.iconColor || '#fff' }} />
+                    </div>
+                    <div className="treatment-card-media-label">{info.label}</div>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
                     <span style={{background:sev.bg,color:sev.color,fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:'var(--radius-pill)',display:'inline-flex',alignItems:'center',gap:5}}>
                       <i className={`ph ${sev.icon}`}></i> {sev.label}
                     </span>
                   </div>
-                  <h4 style={{fontSize:18,fontWeight:800,color:'var(--black)'}}>{disease.name}</h4>
-                  <p style={{fontSize:13,color:'var(--gray-600)',lineHeight:1.6,margin:0}}>
-                    {disease.description?.slice(0, 110)}{disease.description?.length > 110 ? '...' : ''}
+                  <h4 style={{fontSize:18,fontWeight:800,color:'var(--black)',marginBottom:10}}>{disease.name}</h4>
+                  <p style={{fontSize:13,color:'var(--gray-600)',lineHeight:1.7,margin:0}}>
+                    {disease.description?.slice(0, 120)}{disease.description?.length > 120 ? '...' : ''}
                   </p>
                   <div style={{display:'flex',alignItems:'center',gap:5,color:'var(--green-600)',fontSize:13,fontWeight:700,marginTop:'auto'}}>
                     <i className="ph ph-arrow-right"></i> Lihat selengkapnya

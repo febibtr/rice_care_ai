@@ -400,66 +400,39 @@ export default function Scan() {
 
         {/* ════════════ HASIL DETEKSI ════════════ */}
         {result && info && (
-          <div className="result-box mt-4">
-            <div className="result-diagnosis-header" style={{ borderLeft: `4px solid ${info.severityColor}` }}>
+          <div className="result-panel mt-4">
+            <div className="result-header">
+              <div className="result-signal" style={{ background: info.iconBg || 'rgba(34,181,58,.08)' }}>
+                <i className={`ph ${info.icon}`} style={{ color: info.iconColor || info.severityColor, fontSize: 28 }}></i>
+              </div>
               <div>
-                <span className="result-emoji">{info.emoji}</span>
-                <span className="result-label" style={{ color: info.severityColor }}>{info.label}</span>
-                <span className="result-severity ms-2">{info.severityLabel}</span>
+                <div className="result-title">{info.label}</div>
+                <div className="result-subtitle">{info.severityLabel}</div>
               </div>
               {saved && <span className="badge bg-success" style={{ fontSize:'11px' }}>✓ Tersimpan</span>}
             </div>
 
-            <div className="confidence-section">
-              {Object.entries(result.confidence).map(([key, val]) => {
-                const d = DISEASE_INFO[key];
-                return (
-                  <div className="conf-row" key={key}>
-                    <span className="conf-label">{d?.label || key}</span>
-                    <div className="conf-bar-wrap">
-                      <div className="conf-bar" style={{ width:`${val}%`, background: d?.severityColor || '#16a34a' }} />
-                    </div>
-                    <span className="conf-pct">{Math.round(val)}%</span>
-                  </div>
-                );
-              })}
+            <div className="result-stats-grid">
+              <div className="result-stat-card">
+                <div className="result-stat-label">Prediksi</div>
+                <div className="result-stat-value" style={{ color: info.severityColor }}>{info.label}</div>
+              </div>
+              <div className="result-stat-card">
+                <div className="result-stat-label">Confidence</div>
+                <div className="result-stat-value">{Math.round(result.topConfidence)}%</div>
+              </div>
+              <div className="result-stat-card result-stat-card-full">
+                <div className="result-stat-label">Keterangan singkat</div>
+                <div className="result-stat-note">{result.aiNotes || info.description}</div>
+              </div>
             </div>
 
-            <div className="result-tab-nav">
-              {['info','treatment','prevention'].map(t => (
-                <button
-                  key={t}
-                  className={`result-tab-btn${activeTab === t ? ' active' : ''}`}
-                  onClick={() => setActiveTab(t)}
-                >
-                  {t === 'info' ? '📋 Info' : t === 'treatment' ? '💊 Penanganan' : '🛡️ Pencegahan'}
-                </button>
-              ))}
+            <div className="result-footer">
+              <span className="infer-time text-muted small">⏱ Inferensi: {result.inferenceTimeMs}ms</span>
+              <button className="btn btn-outline-secondary btn-sm result-reset-btn" onClick={resetAll}>
+                <i className="bi bi-arrow-repeat me-1"></i>Analisis Gambar Lain
+              </button>
             </div>
-
-            <div className="result-tab-content">
-              {activeTab === 'info' && (
-                <div>
-                  <p className="result-desc">{info.description}</p>
-                  {result.aiNotes && (
-                    <p className="ai-notes">
-                      <i className="bi bi-robot me-1"></i>{result.aiNotes}
-                    </p>
-                  )}
-                  <p className="infer-time text-muted small">⏱ Inferensi: {result.inferenceTimeMs}ms</p>
-                </div>
-              )}
-              {activeTab === 'treatment' && (
-                <ol className="result-list">{info.treatments.map((t, i) => <li key={i}>{t}</li>)}</ol>
-              )}
-              {activeTab === 'prevention' && (
-                <ul className="result-list">{info.preventions.map((p, i) => <li key={i}>{p}</li>)}</ul>
-              )}
-            </div>
-
-            <button className="btn btn-outline-secondary btn-sm mt-3 w-100" onClick={resetAll}>
-              <i className="bi bi-arrow-repeat me-1"></i>Analisis Gambar Lain
-            </button>
           </div>
         )}
       </main>

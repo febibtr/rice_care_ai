@@ -8,6 +8,7 @@ const validate = require('../middlewares/validate');
 
 const updateProfileRules = [
   body('name').optional().trim().isLength({ min: 2, max: 100 }).withMessage('Nama 2-100 karakter'),
+  body('email').optional().isEmail().withMessage('Format email tidak valid').normalizeEmail(),
 ];
 
 // Semua route butuh autentikasi

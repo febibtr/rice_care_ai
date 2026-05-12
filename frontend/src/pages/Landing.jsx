@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import farmBg from '../assets/fram-padi.jpg';
@@ -108,7 +108,6 @@ const teamMembers = [
 export default function Landing() {
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('ricecare_auth') === 'true';
-  const [step, setStep] = useState(0);
   const revealRefs = useRef([]);
 
   const goToScan = () => navigate(isLoggedIn ? '/scan' : '/register');
@@ -215,70 +214,21 @@ export default function Landing() {
           <h2 className="section-title">Cara <span>Penggunaan</span></h2>
           <p className="cara-subtitle">Empat langkah mudah memulai deteksi penyakit padi dengan AI</p>
 
-          {/* Timeline stepper — horizontal steps */}
-          <div className="cara-stepper">
+          {/* Two-column grid layout */}
+          <div className="cara-grid">
             {langkah.map((l, i) => (
-              <div
-                key={i}
-                className={`cara-step-card ${step === i ? 'active' : ''}`}
-                onClick={() => setStep(i)}
-              >
-                {/* connector line */}
-                {i < langkah.length - 1 && <span className="cara-connector"></span>}
-
-                {/* icon bubble */}
-                <div className="cara-step-icon" style={{ background: l.iconBg, color: l.iconColor }}>
+              <div key={i} className="cara-step-simple">
+                <div className="cara-step-icon-simple" style={{ background: l.iconBg, color: l.iconColor }}>
                   <i className={`ph ${l.icon}`}></i>
                 </div>
-
-                {/* step badge */}
-                <div className="cara-step-num" style={{ background: step === i ? l.iconColor : 'var(--gray-200)', color: step === i ? '#fff' : 'var(--gray-500)' }}>
-                  {i + 1}
+                <div className="cara-step-content">
+                  <div className="cara-step-num-simple">{i + 1}</div>
+                  <h4 className="cara-step-title-simple">{l.title}</h4>
+                  <p className="cara-step-desc">{l.desc}</p>
+                  <p className="cara-step-detail">{l.detail}</p>
                 </div>
-
-                <h4 className="cara-step-title">{l.title}</h4>
               </div>
             ))}
-          </div>
-
-          {/* Active step detail card */}
-          <div className="cara-detail-card">
-            <div className="cara-detail-icon" style={{ background: langkah[step].iconBg, color: langkah[step].iconColor }}>
-              <i className={`ph ${langkah[step].icon}`}></i>
-            </div>
-            <div className="cara-detail-text">
-              <span className="cara-detail-num">Langkah {step + 1}</span>
-              <h3>{langkah[step].title}</h3>
-              <p>{langkah[step].desc}</p>
-              <p className="cara-detail-extra">{langkah[step].detail}</p>
-            </div>
-            <div className="cara-detail-nav">
-              <button
-                disabled={step === 0}
-                onClick={() => setStep(s => s - 1)}
-                className="cara-nav-btn"
-              >
-                <i className="ph ph-arrow-left"></i>
-              </button>
-              <span className="cara-nav-dots">
-                {langkah.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`cara-dot ${step === i ? 'active' : ''}`}
-                    onClick={() => setStep(i)}
-                    style={step === i ? { background: langkah[step].iconColor } : {}}
-                  />
-                ))}
-              </span>
-              <button
-                disabled={step === 3}
-                onClick={() => setStep(s => s + 1)}
-                className="cara-nav-btn cara-nav-btn-next"
-                style={{ background: langkah[step].iconColor }}
-              >
-                <i className="ph ph-arrow-right"></i>
-              </button>
-            </div>
           </div>
         </section>
 

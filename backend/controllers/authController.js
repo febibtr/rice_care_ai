@@ -29,7 +29,7 @@ const register = async (req, res, next) => {
 
     const user = await User.create({ name, email, password });
 
-    const payload = { userId: user._id, role: user.role };
+    const payload = { userId: user._id };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
@@ -69,7 +69,7 @@ const login = async (req, res, next) => {
       return unauthorizedResponse(res, 'Email atau password salah');
     }
 
-    const payload = { userId: user._id, role: user.role };
+    const payload = { userId: user._id };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
@@ -113,7 +113,7 @@ const refreshToken = async (req, res, next) => {
       return unauthorizedResponse(res, 'Refresh token tidak valid');
     }
 
-    const payload = { userId: user._id, role: user.role };
+    const payload = { userId: user._id };
     const newAccessToken = generateAccessToken(payload);
     const newRefreshToken = generateRefreshToken(payload);
 

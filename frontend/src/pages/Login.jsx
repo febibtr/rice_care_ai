@@ -34,7 +34,7 @@ export default function Login() {
           </div>
         </div>
         <div>
-          <h1>Selamat Datang<br/>Kembali 👋</h1>
+          <h1>Selamat Datang<br/>Kembali</h1>
           <h4>Login ke akunmu</h4>
           <p>Lindungi tanaman padi Anda dengan teknologi deteksi penyakit berbasis AI.</p>
           <div style={{display:'flex',gap:16,marginTop:32}}>

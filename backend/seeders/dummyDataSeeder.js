@@ -12,21 +12,18 @@ const dummyUsers = [
     name: 'Petani Demo',
     email: 'demo@ricecare.id',
     password: 'password123',
-    role: 'user',
     scanCount: 12,
   },
   {
     name: 'Admin RiceCare',
     email: 'admin@ricecare.id',
     password: 'admin123456',
-    role: 'admin',
     scanCount: 0,
   },
   {
     name: 'Budi Santoso',
     email: 'budi@petani.id',
     password: 'password123',
-    role: 'user',
     scanCount: 8,
   },
 ];
@@ -124,7 +121,7 @@ const seed = async () => {
       const hashedPwd = await bcrypt.hash(userData.password, salt);
       const user = await User.create({ ...userData, password: hashedPwd });
       createdUsers.push(user);
-      logger.info(`👤 User: ${user.email} (role: ${user.role})`);
+      logger.info(`👤 User: ${user.email}`);
     }
 
     // Buat scan dummy untuk user pertama (Petani Demo)

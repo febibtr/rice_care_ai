@@ -35,7 +35,7 @@ export default function ResetPassword() {
           </div>
         </div>
         <div>
-          <h1>Tenang,<br/>Kami Bantu 🔑</h1>
+          <h1>Tenang,<br/>Kami Bantu</h1>
           <h4>Reset Password Akun</h4>
           <p>Masukkan email Anda dan kami akan mengirimkan tautan untuk membuat password baru dalam hitungan menit.</p>
           <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>

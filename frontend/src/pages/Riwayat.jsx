@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http:/
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI — Powered by MobileNetV2 & Claude AI</p>
+      <p className="footer-copy">© 2025 RiceCare AI — Powered by RicecareAI</p>
     </div>
   </footer>
 );
@@ -49,10 +49,10 @@ export default function Riwayat() {
 
   const filterOptions = [
     { key: '', label: 'Semua Scan', icon: 'ph-list' },
-    { key: 'sehat', label: DISEASE_INFO.sehat?.emoji + ' Sehat', icon: 'ph-leaf' },
-    { key: 'blast', label: DISEASE_INFO.blast?.emoji + ' Blast', icon: 'ph-warning' },
-    { key: 'tungro', label: DISEASE_INFO.tungro?.emoji + ' Tungro', icon: 'ph-bug' },
-    { key: 'brownspot', label: DISEASE_INFO.brownspot?.emoji + ' Brown Spot', icon: 'ph-circle-dashed' },
+    { key: 'sehat', label: 'Sehat', icon: DISEASE_INFO.sehat?.icon || 'ph-leaf' },
+    { key: 'blast', label: 'Blast', icon: DISEASE_INFO.blast?.icon || 'ph-warning' },
+    { key: 'tungro', label: 'Tungro', icon: DISEASE_INFO.tungro?.icon || 'ph-bug' },
+    { key: 'brownspot', label: 'Brown Spot', icon: DISEASE_INFO.brownspot?.icon || 'ph-warning-circle' },
   ];
 
   return (
@@ -115,10 +115,17 @@ export default function Riwayat() {
                 <div className="result-card" key={scan._id}>
                   {imgUrl
                     ? <img src={imgUrl} alt={info.label} onError={e => e.target.style.display='none'} />
-                    : <div style={{height:160,background:'var(--green-50)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:40}}>{info.emoji}</div>
+                    : <div style={{height:160,background:'var(--green-50)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:40}}>
+                        <i className={`ph ${info.icon}`} style={{ color: info.iconColor || info.severityColor, fontSize: 44 }}></i>
+                      </div>
                   }
                   <div className="result-card-body">
-                    <h3>{info.emoji} {info.label}</h3>
+                    <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                      <span className="result-card-icon" style={{background: info.iconBg || 'var(--gray-100)', color: info.iconColor || info.severityColor}}>
+                        <i className={`ph ${info.icon}`} style={{fontSize:18}}></i>
+                      </span>
+                      <h3 style={{margin:0}}>{info.label}</h3>
+                    </div>
                     <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
                       <span className="confidence">
                         <i className="ph ph-chart-bar"></i> {Math.round(scan.topConfidence)}% Keyakinan

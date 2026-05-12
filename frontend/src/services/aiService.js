@@ -1,90 +1,87 @@
 /**
  * aiService.js
- * Simulasi model AI MobileNetV2 menggunakan Claude API sebagai dummy
- * Nanti bisa diganti dengan endpoint TFLite/model asli
+ * Dummy model AI MobileNetV2 lokal untuk deteksi penyakit daun padi
+ * Digunakan agar fitur deteksi dapat berjalan tanpa API eksternal.
  */
 
-const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const DIAGNOSIS_CLASSES = ['sehat', 'blast', 'tungro', 'brownspot'];
 
-/**
- * Konversi File ke base64
- */
-const fileToBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+const hashString = (value) => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = ((hash << 5) - hash) + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+};
+
+const buildConfidence = (diagnosis, seed) => {
+  const base = [10, 10, 10, 10];
+  const idx = DIAGNOSIS_CLASSES.indexOf(diagnosis);
+  const main = 60 + (seed % 31);
+  base[idx] = main;
+
+  let total = base.reduce((acc, value) => acc + value, 0);
+  const scores = base.map((score, i) => {
+    if (i === idx) return score;
+    const add = ((seed >> (i * 4)) % 10);
+    total += add;
+    return score + add;
   });
 
+  const diff = 100 - scores.reduce((acc, value) => acc + value, 0);
+  scores[idx] += diff;
+
+  return DIAGNOSIS_CLASSES.reduce((obj, key, i) => {
+    obj[key] = Math.max(0, Math.min(100, Math.round(scores[i])));
+    return obj;
+  }, {});
+};
+
+const aiNotesByDiagnosis = {
+  sehat: [
+    'Daun terlihat hijau segar dengan tekstur rata dan tanpa bercak.',
+    'Tidak ditemukan tanda-tanda penyakit atau perubahan warna berarti.',
+  ],
+  blast: [
+    'Terlihat bercak cokelat dengan batas jelas dan permukaan kering.',
+    'Bercak seperti belah ketupat menunjukkan gejala blast.',
+  ],
+  tungro: [
+    'Daun menguning dari pangkal dan tampak layu pada ujungnya.',
+    'Gejala yang seragam pada daun menandakan kemungkinan tungro.',
+  ],
+  brownspot: [
+    'Bercak kecil coklat dengan halo kuning bertebaran pada daun.',
+    'Pattern bercak oval pada daun mengarah ke brown spot.',
+  ],
+};
+
+const pickNote = (diagnosis, seed) => {
+  const notes = aiNotesByDiagnosis[diagnosis] || aiNotesByDiagnosis.sehat;
+  return notes[seed % notes.length];
+};
+
 /**
- * Dummy AI: panggil Claude API untuk analisis gambar daun padi
+ * Dummy AI: analisis gambar daun padi secara lokal
  * @param {File} imageFile
  * @returns {{ diagnosis, confidence, aiNotes, inferenceTimeMs }}
  */
 export const analyzeLeafImage = async (imageFile) => {
   const startTime = Date.now();
+  const seedSource = `${imageFile.name}-${imageFile.size}-${imageFile.type}`;
+  const seed = hashString(seedSource);
 
-  const base64 = await fileToBase64(imageFile);
-  const mediaType = imageFile.type || 'image/jpeg';
-
-  const prompt = `Kamu adalah model AI deteksi penyakit daun padi berbasis MobileNetV2 (dummy simulation).
-Analisis gambar daun padi ini dan berikan prediksi klasifikasi.
-
-Kembalikan HANYA JSON berikut tanpa teks lain:
-{
-  "diagnosis": "<sehat | blast | tungro | brownspot>",
-  "confidence": {
-    "sehat": <0-100>,
-    "blast": <0-100>,
-    "tungro": <0-100>,
-    "brownspot": <0-100>
-  },
-  "aiNotes": "<satu kalimat deskripsi ciri visual yang terdeteksi>"
-}
-
-Aturan:
-- Total semua nilai confidence HARUS tepat 100
-- diagnosis harus cocok dengan confidence tertinggi
-- Jika gambar bukan daun padi, set diagnosis=sehat dengan confidence sehat=95`;
-
-  const response = await fetch(CLAUDE_API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-            { type: 'text', text: prompt },
-          ],
-        },
-      ],
-    }),
-  });
-
-  if (!response.ok) {
-    const err = await response.json();
-    throw new Error(err.error?.message || 'AI API error');
-  }
-
-  const apiData = await response.json();
-  const rawText = apiData.content[0].text.trim().replace(/```json|```/g, '').trim();
-  const result = JSON.parse(rawText);
-
-  // Validasi diagnosis valid
-  if (!DIAGNOSIS_CLASSES.includes(result.diagnosis)) {
-    result.diagnosis = 'sehat';
-  }
+  const diagnosis = DIAGNOSIS_CLASSES[seed % DIAGNOSIS_CLASSES.length];
+  const confidence = buildConfidence(diagnosis, seed);
+  const topConfidence = Math.max(...Object.values(confidence));
+  const aiNotes = pickNote(diagnosis, seed);
 
   return {
-    diagnosis: result.diagnosis,
-    confidence: result.confidence,
-    aiNotes: result.aiNotes || '',
+    diagnosis,
+    confidence,
+    topConfidence,
+    aiNotes,
     inferenceTimeMs: Date.now() - startTime,
   };
 };
@@ -96,8 +93,12 @@ export const DISEASE_INFO = {
   sehat: {
     label: 'Sehat',
     emoji: '✅',
+    icon: 'ph-leaf',
+    cardGradient: 'linear-gradient(135deg, rgba(22,163,74,0.95), rgba(134,239,172,0.92))',
     severityLabel: 'Tidak ada penyakit',
     severityColor: '#16a34a',
+    iconColor: '#16a34a',
+    iconBg: 'rgba(255,255,255,0.22)',
     description: 'Daun padi dalam kondisi sehat. Tidak ditemukan gejala infeksi penyakit secara visual.',
     treatments: [
       'Tidak ada penanganan khusus yang diperlukan saat ini.',
@@ -113,8 +114,12 @@ export const DISEASE_INFO = {
   blast: {
     label: 'Blast',
     emoji: '🔴',
+    icon: 'ph-fire',
+    cardGradient: 'linear-gradient(135deg, rgba(220,38,38,0.95), rgba(251,146,60,0.9))',
     severityLabel: 'Risiko Tinggi',
     severityColor: '#dc2626',
+    iconColor: '#dc2626',
+    iconBg: 'rgba(255,255,255,0.22)',
     description: 'Terdeteksi gejala Blast (Magnaporthe oryzae). Bercak belah ketupat dengan tepi cokelat dan pusat abu-abu.',
     treatments: [
       'Aplikasikan fungisida Trycyclazole atau Isoprothiolane sesuai dosis.',
@@ -131,8 +136,12 @@ export const DISEASE_INFO = {
   tungro: {
     label: 'Tungro',
     emoji: '🟡',
+    icon: 'ph-bug',
+    cardGradient: 'linear-gradient(135deg, rgba(245,158,11,0.95), rgba(252,211,77,0.88))',
     severityLabel: 'Risiko Sedang',
     severityColor: '#d97706',
+    iconColor: '#d97706',
+    iconBg: 'rgba(255,255,255,0.22)',
     description: 'Terdeteksi gejala Tungro (RTBV & RTSV). Daun menguning dari ujung ke pangkal, pertumbuhan terhambat.',
     treatments: [
       'Kendalikan wereng hijau dengan insektisida Buprofezin atau Imidakloprid.',
@@ -148,8 +157,12 @@ export const DISEASE_INFO = {
   brownspot: {
     label: 'Brown Spot',
     emoji: '🟠',
+    icon: 'ph-warning-circle',
+    cardGradient: 'linear-gradient(135deg, rgba(194,65,12,0.95), rgba(251,191,36,0.88))',
     severityLabel: 'Risiko Sedang',
     severityColor: '#c2410c',
+    iconColor: '#c2410c',
+    iconBg: 'rgba(255,255,255,0.22)',
     description: 'Terdeteksi Brown Spot (Cochliobolus miyabeanus). Bercak cokelat oval dengan halo kuning akibat kekurangan kalium.',
     treatments: [
       'Aplikasikan fungisida Mancozeb atau Iprobenfos sesuai anjuran.',

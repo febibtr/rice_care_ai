@@ -24,11 +24,6 @@ const userSchema = new mongoose.Schema(
       minlength: [6, 'Password minimal 6 karakter'],
       select: false, // tidak dikembalikan saat query default
     },
-    role: {
-      type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-    },
     refreshToken: {
       type: String,
       select: false,
