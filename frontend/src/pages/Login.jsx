@@ -90,7 +90,7 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="auth-switch">Belum punya akun? <Link to="/register">Daftar gratis</Link></p>
+          <p className="auth-switch">Belum punya akun? <Link to="/register">Daftar Akun</Link></p>
         </div>
       </div>
     </div>

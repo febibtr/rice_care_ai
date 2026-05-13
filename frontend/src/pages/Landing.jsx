@@ -6,35 +6,23 @@ import farmBg from '../assets/fram-padi.jpg';
 const langkah = [
   {
     title: 'Buat Akun',
-    icon: 'ph-user-circle-plus',
-    iconBg: '#dcfce7',
-    iconColor: '#16a34a',
+    img: '/register-step.jpg',
     desc: 'Daftar akun terlebih dahulu untuk menggunakan fitur RiceCare AI secara penuh.',
-    detail: 'Proses registrasi cepat dan gratis. Cukup masukkan nama, email, dan password.'
   },
   {
     title: 'Scan Daun Padi',
-    icon: 'ph-camera-plus',
-    iconBg: '#dbeafe',
-    iconColor: '#2563eb',
+    img: '/scan-step.jpg',
     desc: 'Upload atau ambil foto langsung dari kamera untuk memulai deteksi penyakit tanaman.',
-    detail: 'Mendukung upload file atau kamera langsung. Format JPG, PNG, dan WEBP.'
   },
   {
     title: 'Lihat Hasil AI',
-    icon: 'ph-brain',
-    iconBg: '#fef9c3',
-    iconColor: '#ca8a04',
+    img: '/result-step.jpg',
     desc: 'Sistem CNN akan menampilkan hasil diagnosa beserta tingkat keyakinan AI.',
-    detail: 'Hasil analisis tampil dalam hitungan detik dengan confidence score dan detail penyakit.'
   },
   {
     title: 'Terapkan Penanganan',
-    icon: 'ph-first-aid-kit',
-    iconBg: '#fee2e2',
-    iconColor: '#dc2626',
+    img: '/treatment-step.jpg',
     desc: 'Baca solusi dan panduan penanganan penyakit padi secara lengkap dan terperinci.',
-    detail: 'Panduan berbasis ilmiah mencakup pengobatan, pencegahan, dan dosis yang tepat.'
   }
 ];
 
@@ -146,7 +134,7 @@ export default function Landing() {
               <button className="btn-hero-primary" onClick={goToScan} type="button">
                 <i className="ph ph-scan"></i> Mulai Deteksi
               </button>
-              <a className="btn-hero-secondary" href="#cara-pakai">
+              <a className="btn-hero-secondary" href="#panduan">
                 <i className="ph ph-play-circle"></i> Cara Pakai
               </a>
             </div>
@@ -161,24 +149,17 @@ export default function Landing() {
               </div>
               <div className="hero-stat">
                 <div className="num">4</div>
-                <div className="lbl">Kategori Penyakit</div>
+                <div className="lbl">Kategori</div>
               </div>
             </div>
           </div>
           <div className="hero-right">
             <img src={farmBg} alt="Tanaman Padi" />
-            <div className="hero-float-card">
-              <div className="icon-wrap">🌾</div>
-              <div className="card-text">
-                <div className="big">Analisis AI</div>
-                <div className="sml">Real-time detection</div>
-              </div>
-            </div>
           </div>
         </section>
 
         {/* ── FEATURES ── */}
-        <section className="feature-section" ref={addReveal}>
+        <section className="feature-section" id="fitur" ref={addReveal}>
           <div className="section-label">
             <i className="ph ph-lightning"></i> Fitur Utama
           </div>
@@ -207,25 +188,22 @@ export default function Landing() {
         </section>
 
         {/* ── CARA PAKAI ── */}
-        <section className="cara-section" id="cara-pakai" ref={addReveal}>
+        <section className="cara-section" id="panduan" ref={addReveal}>
           <div className="section-label">
             <i className="ph ph-map-trifold"></i> Panduan
           </div>
           <h2 className="section-title">Cara <span>Penggunaan</span></h2>
-          <p className="cara-subtitle">Empat langkah mudah memulai deteksi penyakit padi dengan AI</p>
-
-          {/* Two-column grid layout */}
+          {/* Horizontal scroll layout */}
           <div className="cara-grid">
             {langkah.map((l, i) => (
               <div key={i} className="cara-step-simple">
-                <div className="cara-step-icon-simple" style={{ background: l.iconBg, color: l.iconColor }}>
-                  <i className={`ph ${l.icon}`}></i>
+                <div className="cara-step-img">
+                  <img src={l.img} alt={l.title} />
                 </div>
                 <div className="cara-step-content">
                   <div className="cara-step-num-simple">{i + 1}</div>
                   <h4 className="cara-step-title-simple">{l.title}</h4>
                   <p className="cara-step-desc">{l.desc}</p>
-                  <p className="cara-step-detail">{l.detail}</p>
                 </div>
               </div>
             ))}
@@ -271,12 +249,12 @@ export default function Landing() {
         </section>
 
         {/* ── TEAM ── */}
-        <section className="dev-section" ref={addReveal}>
+        <section className="dev-section" id="team" ref={addReveal}>
           <div className="section-label">
-            <i className="ph ph-users-three"></i> Tim
+            <i className="ph ph-users-three"></i> Kolaborasi
           </div>
-          <h2 className="section-title">Meet our <span>Team</span></h2>
-          <p className="dev-subtitle">Tim multidisiplin yang berdedikasi membangun solusi AI terbaik untuk petani Indonesia.</p>
+          <h2 className="section-title"><span>Team</span></h2>
+          <p className="dev-subtitle">Membangun solusi untuk petani Indonesia.</p>
 
           <div className="dev-row">
             {teamMembers.map((m, i) => (
@@ -318,7 +296,7 @@ export default function Landing() {
       <footer className="footer-box">
         <div className="footer-top">
           <div className="footer-brand">
-            <img src={farmBg} alt="" style={{height:30,width:50,objectFit:'cover',borderRadius:8,opacity:.7}}/>
+            {/* <img src={img} alt="" style={{height:30,width:50,objectFit:'cover',borderRadius:8,opacity:.7}}/> */}
             <span className="footer-brand-name">RiceCare AI</span>
             <p className="footer-brand-desc">Platform AI untuk deteksi penyakit tanaman padi menggunakan CNN. Membantu petani Indonesia lebih produktif.</p>
             <div className="footer-social">
@@ -333,7 +311,6 @@ export default function Landing() {
             <a href="#"><i className="ph ph-camera" style={{marginRight:6}}></i>Deteksi Penyakit</a>
             <a href="#"><i className="ph ph-clock" style={{marginRight:6}}></i>Riwayat Scan</a>
             <a href="#"><i className="ph ph-shield" style={{marginRight:6}}></i>Penanganan</a>
-            <a href="#info-ai"><i className="ph ph-info" style={{marginRight:6}}></i>Info Model AI</a>
           </div>
           <div className="footer-col">
             <h5>Platform</h5>

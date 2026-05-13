@@ -45,7 +45,7 @@ export default function Navbar() {
         {/* Brand */}
         <Link className="brand-logo" to="/" onClick={closeMenu}>
           <img src={logo} alt="RiceCare AI" />
-          <span className="brand-name">RiceCare AI</span>
+          {/* <span className="brand-name">RiceCare AI</span> */}
         </Link>
 
         {/* Desktop nav-center */}
@@ -80,8 +80,20 @@ export default function Navbar() {
             <i className="ph ph-shield-check"></i> Penanganan
           </NavLink>
 
+          <a className="nav-link" href="/#fitur">
+            <i className="ph ph-lightning"></i> Fitur
+          </a>
+
+          <a className="nav-link" href="/#panduan">
+            <i className="ph ph-map-trifold"></i> Panduan
+          </a>
+
           <a className="nav-link" href="/#info-ai">
             <i className="ph ph-info"></i> Info
+          </a>
+
+          <a className="nav-link" href="/#team">
+            <i className="ph ph-users-three"></i> Team
           </a>
         </div>
 
@@ -167,8 +179,20 @@ export default function Navbar() {
           <i className="ph ph-shield-check"></i> Penanganan
         </Link>
 
+        <a href="/#fitur" onClick={closeMenu} className="mobile-nav-item">
+          <i className="ph ph-lightning"></i> Fitur
+        </a>
+
+        <a href="/#panduan" onClick={closeMenu} className="mobile-nav-item">
+          <i className="ph ph-map-trifold"></i> Panduan
+        </a>
+
         <a href="/#info-ai" onClick={closeMenu} className="mobile-nav-item">
           <i className="ph ph-info"></i> Info AI
+        </a>
+
+        <a href="/#team" onClick={closeMenu} className="mobile-nav-item">
+          <i className="ph ph-users-three"></i> Team
         </a>
 
         <div className="mobile-nav-divider"></div>

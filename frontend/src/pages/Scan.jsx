@@ -437,7 +437,7 @@ export default function Scan() {
         )}
       </main>
       <footer className="footer-box">
-        <p><b>© RiceCareAi</b> - Powered by MobileNetV2 &amp; Claude AI</p>
+        <p><b>© RiceCareAi</b></p>
       </footer>
     </div>
   );

@@ -1377,69 +1377,115 @@ img { max-width: 100%; display: block; }
   margin: -8px 0 48px;
 }
 
-/* Two-column grid layout */
+/* Horizontal single-row layout */
 .cara-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  max-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 16px;
   margin: 0 auto;
+  max-width: 100%;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+}
+
+.cara-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .cara-step-simple {
+  position: relative;
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 28px;
-  background: #fff;
-  border: 1px solid rgba(34,197,94,.12);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(15,23,42,.06);
-  transition: transform .25s ease, box-shadow .25s ease;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  min-width: min(280px, 90%);
+  flex: 0 0 min(280px, 90%);
+  background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(249,250,251,.9));
+  border: 1px solid rgba(59,130,246,.15);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(59,130,246,.1);
+  backdrop-filter: blur(8px);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  scroll-snap-align: start;
+  text-align: center;
 }
 
 .cara-step-simple:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(15,23,42,.12);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(59,130,246,.2);
+  border-color: rgba(59,130,246,.3);
+}
+
+.cara-step-img {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+}
+
+.cara-step-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+
+.cara-step-simple:hover .cara-step-img img {
+  transform: scale(1.05);
 }
 
 .cara-step-icon-simple {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 24px;
   flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(15,23,42,.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  position: relative;
+  z-index: 2;
 }
 
 .cara-step-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   position: relative;
+  padding-top: 8px;
 }
 
 .cara-step-num-simple {
   position: absolute;
-  top: -8px;
-  right: 0;
-  width: 32px;
-  height: 32px;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--green-500);
+  background: linear-gradient(135deg, var(--purple-500), var(--fuchsia-500));
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(148,163,184,.3);
 }
 
 .cara-step-title-simple {
   font-size: 18px;
   font-weight: 800;
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--gray-900);
   line-height: 1.3;
 }
@@ -1448,36 +1494,56 @@ img { max-width: 100%; display: block; }
   font-size: 14px;
   color: var(--gray-600);
   line-height: 1.6;
-  margin: 0 0 12px;
+  margin: 0;
 }
 
 .cara-step-detail {
   font-size: 13px;
-  color: var(--gray-500);
+  color: var(--purple-600);
   line-height: 1.5;
   margin: 0;
-  font-style: italic;
+  font-style: normal;
 }
 
 @media (max-width: 768px) {
   .cara-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .cara-step-simple {
-    padding: 24px;
-    flex-direction: column;
-    text-align: center;
     gap: 16px;
   }
 
+  .cara-step-simple {
+    padding: 20px;
+    min-width: min(260px, 85%);
+    flex: 0 0 min(260px, 85%);
+  }
+
+  .cara-step-img {
+    height: 120px;
+  }
+
+  .cara-step-icon-simple {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
   .cara-step-num-simple {
-    position: static;
-    align-self: center;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .cara-step-title-simple {
+    font-size: 16px;
+  }
+
+  .cara-step-desc {
+    font-size: 13px;
+  }
+
+  .cara-step-detail {
+    font-size: 12px;
   }
 }
-
 
 /* ══════════════════════════════════════════════
    TEAM — SINGLE ROW HORIZONTAL (with animations)

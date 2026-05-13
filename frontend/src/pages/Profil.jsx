@@ -8,7 +8,6 @@ const Footer = () => (
   <footer className="footer-box" style={{marginTop:0}}>
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
       <p className="footer-copy">© 2025 RiceCare AI — Semua hak dilindungi</p>
-      <p className="footer-copy">Powered by MobileNetV2 & Claude AI</p>
     </div>
   </footer>
 );
@@ -25,10 +24,29 @@ export default function Profil() {
   const [error, setError] = useState('');
   const [passError, setPassError] = useState('');
   const [passSuccess, setPassSuccess] = useState('');
+  const [stats, setStats] = useState({ totalScan: 0, terdeteksi: 0, sehat: 0 });
 
   useEffect(() => {
     if (!isLoggedIn()) navigate('/login');
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { data } = await api.get('/scans/stats/summary');
+        const { totalScans, breakdown } = data.data;
+        setStats({
+          totalScan: totalScans,
+          terdeteksi: totalScans - (breakdown.sehat || 0),
+          sehat: breakdown.sehat || 0,
+        });
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+        // Keep default values if error
+      }
+    };
+    fetchStats();
+  }, []);
 
   const firstLetter = form.name?.[0]?.toUpperCase() || '?';
 
@@ -84,18 +102,18 @@ export default function Profil() {
           <div className="profile-header-info">
             <h2>{form.name || 'Petani'}</h2>
             <p><i className="ph ph-envelope" style={{marginRight:5}}></i>{form.email}</p>
-            <span className="profile-chip">
+            {/* <span className="profile-chip">
               <i className="ph ph-check-circle"></i> Akun Aktif
-            </span>
+            </span> */}
           </div>
         </div>
 
         {/* Stats */}
         <div className="profile-stats-grid">
           {[
-            {num:'—',label:'Total Scan',icon:'ph-scan'},
-            {num:'—',label:'Terdeteksi',icon:'ph-warning'},
-            {num:'—',label:'Sehat',icon:'ph-leaf'},
+            {num: stats.totalScan, label:'Total Scan',icon:'ph-scan'},
+            {num: stats.terdeteksi, label:'Terdeteksi',icon:'ph-warning'},
+            {num: stats.sehat, label:'Sehat',icon:'ph-leaf'},
           ].map((s,i)=>(
             <div key={i} className="profile-stat-card">
               <div style={{fontSize:22,marginBottom:6}}><i className={`ph ${s.icon}`} style={{color:'var(--green-500)'}}></i></div>

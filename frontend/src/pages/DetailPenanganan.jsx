@@ -6,7 +6,7 @@ import farmBg from '../assets/fram-padi.jpg';
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI — Powered by MobileNetV2 & Claude AI</p>
+      <p className="footer-copy">© 2025 RiceCare AI </p>
     </div>
   </footer>
 );
