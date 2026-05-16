@@ -11,13 +11,17 @@ export default function Navbar() {
   const [deteksiOpen, setDeteksiOpen] = useState(false);
   const [userOpen, setUserOpen]     = useState(false);
   const deteksiRef = useRef(null);
+  const mobileDeteksiRef = useRef(null);
   const userRef    = useRef(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handler = (e) => {
-      if (deteksiRef.current && !deteksiRef.current.contains(e.target)) setDeteksiOpen(false);
-      if (userRef.current    && !userRef.current.contains(e.target))    setUserOpen(false);
+      const clickedOutsideDeteksi = deteksiRef.current && !deteksiRef.current.contains(e.target) &&
+        (!mobileDeteksiRef.current || !mobileDeteksiRef.current.contains(e.target));
+
+      if (clickedOutsideDeteksi) setDeteksiOpen(false);
+      if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -156,24 +160,26 @@ export default function Navbar() {
           <i className="ph ph-house"></i> Beranda
         </Link>
 
-        <button
-          className="mobile-nav-item mobile-nav-toggle"
-          type="button"
-          onClick={() => setDeteksiOpen(o => !o)}
-        >
-          <i className="ph ph-scan"></i> Deteksi
-          <i className={`ph ph-caret-${deteksiOpen ? 'up' : 'down'} mobile-nav-caret`}></i>
-        </button>
-        {deteksiOpen && (
-          <div className="mobile-submenu">
-            <Link to={requireAuthPath('/scan')} onClick={closeMenu}>
-              <i className="ph ph-camera"></i> Deteksi Daun
-            </Link>
-            <Link to={requireAuthPath('/riwayat')} onClick={closeMenu}>
-              <i className="ph ph-clock-counter-clockwise"></i> Riwayat
-            </Link>
-          </div>
-        )}
+        <div ref={mobileDeteksiRef}>
+          <button
+            className="mobile-nav-item mobile-nav-toggle"
+            type="button"
+            onClick={() => setDeteksiOpen(o => !o)}
+          >
+            <i className="ph ph-scan"></i> Deteksi
+            <i className={`ph ph-caret-${deteksiOpen ? 'up' : 'down'} mobile-nav-caret`}></i>
+          </button>
+          {deteksiOpen && (
+            <div className="mobile-submenu">
+              <Link to={requireAuthPath('/scan')} onClick={closeMenu}>
+                <i className="ph ph-camera"></i> Deteksi Daun
+              </Link>
+              <Link to={requireAuthPath('/riwayat')} onClick={closeMenu}>
+                <i className="ph ph-clock-counter-clockwise"></i> Riwayat
+              </Link>
+            </div>
+          )}
+        </div>
 
         <Link to={requireAuthPath('/penanganan')} onClick={closeMenu} className="mobile-nav-item">
           <i className="ph ph-shield-check"></i> Penanganan

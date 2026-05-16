@@ -48,20 +48,20 @@ const teamMembers = [
   {
     photo: '/putri.jpeg',
     name: 'Putri Dwi R',
-    role: 'Frontend',
-    icon: 'ph-paint-brush',
-    color: '#e879f9'
+    role: 'Fullstack',
+    icon: 'ph-code',
+    color: '#38bdf8'
   },
   {
     photo: '/febi.jpeg',
     name: 'Febi Bahtiyar',
-    role: 'Backend',
+    role: 'Fullstcack',
     icon: 'ph-code',
     color: '#38bdf8'
   },
   {
     photo: null,
-    name: 'Reza Firmansyah',
+    name: 'Fransiskus W',
     role: 'AI Engineer',
     icon: 'ph-brain',
     color: '#34d399',
@@ -69,7 +69,7 @@ const teamMembers = [
   },
   {
     photo: null,
-    name: 'Nadia Kusuma',
+    name: 'Wega Pratiwi',
     role: 'AI Engineer',
     icon: 'ph-cpu',
     color: '#34d399',
@@ -77,7 +77,7 @@ const teamMembers = [
   },
   {
     photo: null,
-    name: 'Ahmad Yusuf',
+    name: 'Rifa Agni',
     role: 'Data Science',
     icon: 'ph-chart-line-up',
     color: '#fb923c',
@@ -85,7 +85,7 @@ const teamMembers = [
   },
   {
     photo: null,
-    name: 'Siti Rahayu',
+    name: 'Nisa',
     role: 'Data Science',
     icon: 'ph-database',
     color: '#fb923c',
