@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
+import fram from '../assets/fram-padi.jpg';
 import { getAllDiseases } from '../services/diseaseService';
 import { DISEASE_INFO } from '../services/aiService';
 
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI — Powered by</p>
+      <p className="footer-copy">© 2025 RiceCare AI</p>
     </div>
   </footer>
 );
@@ -47,7 +48,7 @@ export default function Penanganan() {
           </div>
           <h1>Penanganan Penyakit</h1>
           <p style={{color:'var(--gray-600)',fontSize:15,marginTop:6}}>
-            Panduan identifikasi dan penanganan 4 kategori penyakit utama pada tanaman padi.
+            Panduan identifikasi dan penanganan pada tanaman padi.
           </p>
         </div>
 
@@ -61,19 +62,19 @@ export default function Penanganan() {
             {diseases.map((disease) => {
               const sev = severityConfig[disease.severity] || severityConfig.low;
               const info = DISEASE_INFO[disease.key] || DISEASE_INFO.sehat;
+              const imageSrc = disease.image || info.image || fram;
+              const mediaStyle = (!info.image && info.cardGradient) ? { background: info.cardGradient } : {};
+
               return (
                 <button
                   className="treatment-card"
                   key={disease.key}
-                  onClick={() => navigate('/penanganan/detail', { state: { disease: { ...disease, ...info } } })}
+                  onClick={() => navigate('/penanganan/detail', { state: { disease: { ...disease, ...info, image: imageSrc } } })}
                   type="button"
                   style={{borderTop:`3px solid ${sev.color}`}}
                 >
-                  <div className="treatment-card-media" style={{ background: info.cardGradient || 'linear-gradient(135deg, rgba(22,163,74,.9), rgba(74,222,128,.9))' }}>
-                    <div className="treatment-card-media-icon" style={{ background: info.iconBg || 'rgba(255,255,255,.18)' }}>
-                      <i className={`ph ${info.icon || 'ph-leaf'}`} style={{ color: info.iconColor || '#fff' }} />
-                    </div>
-                    <div className="treatment-card-media-label">{info.label}</div>
+                  <div className="treatment-card-media" style={mediaStyle}>
+                    <img className="treatment-card-media-img" src={imageSrc} alt={info.label} />
                   </div>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
                     <span style={{background:sev.bg,color:sev.color,fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:'var(--radius-pill)',display:'inline-flex',alignItems:'center',gap:5}}>

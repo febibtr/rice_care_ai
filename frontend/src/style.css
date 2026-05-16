@@ -488,7 +488,10 @@ img { max-width: 100%; display: block; }
 .confidence { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--green-700); background: var(--green-100); padding: 3px 10px; border-radius: var(--radius-pill); }
 .treatment-card { background: #fff; border: 1.5px solid var(--gray-200); border-radius: var(--radius-xl); overflow: hidden; display: flex; flex-direction: column; text-align: left; transition: var(--transition); width: 100%; }
 .treatment-card:hover { transform: translateY(-3px); border-color: var(--green-300); box-shadow: var(--shadow-sm); }
-.treatment-card-media { min-height: 160px; display: flex; flex-direction: column; justify-content: flex-end; gap: 18px; padding: 20px; color: #fff; }
+.treatment-card-media { min-height: 160px; display: flex; flex-direction: column; justify-content: flex-end; gap: 18px; padding: 20px; color: #fff; position: relative; overflow: hidden; }
+.treatment-card-media-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.treatment-card-media > .treatment-card-media-icon,
+.treatment-card-media > .treatment-card-media-label { position: relative; z-index: 1; }
 .treatment-card-media-icon { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; background: rgba(255,255,255,.2); backdrop-filter: blur(10px); }
 .treatment-card-media-label { font-size: 20px; font-weight: 800; line-height: 1.1; }
 .treatment-card button, .treatment-card a { text-align: left; }

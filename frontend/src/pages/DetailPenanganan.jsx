@@ -53,15 +53,6 @@ export default function DetailPenanganan() {
                 <i className="ph ph-warning"></i> {sev.label}
               </span>
               {disease.latinName && <p style={{fontSize:12,color:'var(--gray-400)',fontStyle:'italic',marginTop:10}}>{disease.latinName}</p>}
-
-              {/* Quick links
-              <div style={{marginTop:20,display:'flex',flexDirection:'column',gap:8}}>
-                {['Penjelasan','Penanganan','Pencegahan'].map((l,i)=>(
-                  <div key={i} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,fontWeight:600,color:'var(--green-700)'}}>
-                    <i className="ph ph-check-circle" style={{color:'var(--green-500)'}}></i> {l} tersedia
-                  </div>
-                ))}
-              </div> */}
             </div>
           </div>
 
