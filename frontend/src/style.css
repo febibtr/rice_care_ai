@@ -1689,6 +1689,30 @@ img { max-width: 100%; display: block; }
 }
 .dev-badge .ph { font-size: 12px; }
 
+.dev-social-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+.dev-social-row a {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, .04);
+  color: var(--gray-600);
+  transition: var(--transition);
+}
+.dev-social-row a:hover {
+  background: rgba(56, 189, 248, .12);
+  color: #0f172a;
+}
+.dev-social-row a .ph {
+  font-size: 16px;
+}
+
 @media (max-width: 640px) {
   .dev-row { gap: 12px; }
   .dev-card-h { width: calc(50% - 6px); }

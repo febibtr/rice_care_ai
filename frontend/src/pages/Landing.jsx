@@ -2,26 +2,30 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import farmBg from '../assets/fram-padi.jpg';
+import loginImg from '../assets/images/tutorial/login.png';
+import scanImg from '../assets/images/tutorial/scan.png';
+import hasilScanImg from '../assets/images/tutorial/hasil-scan.png';
+import penangananImg from '../assets/images/tutorial/penaganan.png';
 
 const langkah = [
   {
     title: 'Buat Akun',
-    img: '/register-step.jpg',
+    img: loginImg,
     desc: 'Daftar akun terlebih dahulu untuk menggunakan fitur RiceCare AI secara penuh.',
   },
   {
     title: 'Scan Daun Padi',
-    img: '/scan-step.jpg',
-    desc: 'Upload atau ambil foto langsung dari kamera untuk memulai deteksi penyakit tanaman.',
+    img: scanImg,
+    desc: 'Unggah atau ambil foto langsung dari kamera untuk memulai deteksi penyakit tanaman.',
   },
   {
     title: 'Lihat Hasil AI',
-    img: '/result-step.jpg',
-    desc: 'Sistem CNN akan menampilkan hasil diagnosa beserta tingkat keyakinan AI.',
+    img: hasilScanImg,
+    desc: 'Sistem akan menampilkan hasil diagnosa beserta tingkat keyakinan AI.',
   },
   {
     title: 'Terapkan Penanganan',
-    img: '/treatment-step.jpg',
+    img: penangananImg,
     desc: 'Baca solusi dan panduan penanganan penyakit padi secara lengkap dan terperinci.',
   }
 ];
@@ -50,14 +54,24 @@ const teamMembers = [
     name: 'Putri Dwi R',
     role: 'Fullstack',
     icon: 'ph-code',
-    color: '#38bdf8'
+    color: '#38bdf8',
+    social: [
+      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:putri@example.com', icon: 'ph-envelope-simple' }
+    ]
   },
   {
     photo: '/febi.jpeg',
     name: 'Febi Bahtiyar',
-    role: 'Fullstcack',
+    role: 'Fullstack',
     icon: 'ph-code',
-    color: '#38bdf8'
+    color: '#38bdf8',
+    social: [
+      { label: 'Instagram', href: 'https://www.instagram.com/effuture?igsh=MWphbXQ5NnE3bHJ3NA==', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/febi-bahtiyar-2a37a8277', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:febibahtiyar@gmail.com', icon: 'ph-envelope-simple' }
+    ]
   },
   {
     photo: null,
@@ -65,7 +79,12 @@ const teamMembers = [
     role: 'AI Engineer',
     icon: 'ph-brain',
     color: '#34d399',
-    initials: 'RF'
+    initials: 'FW',
+    social: [
+      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:fransiskus@example.com', icon: 'ph-envelope-simple' }
+    ]
   },
   {
     photo: null,
@@ -73,23 +92,38 @@ const teamMembers = [
     role: 'AI Engineer',
     icon: 'ph-cpu',
     color: '#34d399',
-    initials: 'NK'
+    initials: 'WP',
+    social: [
+      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:weka@example.com', icon: 'ph-envelope-simple' }
+    ]
   },
   {
     photo: null,
-    name: 'Rifa Agni',
+    name: 'Rifa Agnia',
     role: 'Data Science',
     icon: 'ph-chart-line-up',
     color: '#fb923c',
-    initials: 'AY'
+    initials: 'RA',
+    social: [
+      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:rifa@example.com', icon: 'ph-envelope-simple' }
+    ]
   },
   {
     photo: null,
-    name: 'Nisa',
+    name: 'Nisa Nuraini',
     role: 'Data Science',
     icon: 'ph-database',
     color: '#fb923c',
-    initials: 'SR'
+    initials: 'NN',
+    social: [
+      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:nisa@example.com', icon: 'ph-envelope-simple' }
+    ]
   }
 ];
 
@@ -283,6 +317,21 @@ export default function Landing() {
                   </span>
                 </div>
 
+                {/* contact icons */}
+                <div className="dev-social-row">
+                  {m.social.map((item, idx) => (
+                    <a
+                      key={idx}
+                      href={item.href}
+                      aria-label={`${m.name} ${item.label}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <i className={`ph ${item.icon}`}></i>
+                    </a>
+                  ))}
+                </div>
+
                 {/* animated ring */}
                 <span className="dev-ring" style={{ borderColor: m.color + '40' }}></span>
               </div>
@@ -298,13 +347,12 @@ export default function Landing() {
           <div className="footer-brand">
             {/* <img src={img} alt="" style={{height:30,width:50,objectFit:'cover',borderRadius:8,opacity:.7}}/> */}
             <span className="footer-brand-name">RiceCare AI</span>
-            <p className="footer-brand-desc">Platform AI untuk deteksi penyakit tanaman padi menggunakan CNN. Membantu petani Indonesia lebih produktif.</p>
-            <div className="footer-social">
+            <p className="footer-brand-desc">Platform AI untuk deteksi penyakit tanaman padi. Membantu petani Indonesia lebih produktif.</p>
+            {/* <div className="footer-social">
               <a href="#"><i className="ph ph-instagram-logo"></i></a>
-              <a href="#"><i className="ph ph-twitter-logo"></i></a>
               <a href="#"><i className="ph ph-github-logo"></i></a>
               <a href="#"><i className="ph ph-envelope-simple"></i></a>
-            </div>
+            </div> */}
           </div>
           <div className="footer-col">
             <h5>Fitur</h5>
@@ -317,7 +365,6 @@ export default function Landing() {
             <a href="#">Tentang Kami</a>
             <a href="#">Kebijakan Privasi</a>
             <a href="#">Syarat & Ketentuan</a>
-            <a href="#">Kontak</a>
           </div>
         </div>
         <div className="footer-bottom">
