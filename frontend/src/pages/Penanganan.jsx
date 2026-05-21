@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
-import fram from '../assets/fram-padi.jpg';
+import blastImg from '../assets/images/penyakit/blast.jpg';
+import brownspotImg from '../assets/images/penyakit/brownspot.jpg';
+import tungroImg from '../assets/images/penyakit/tunggro.jpg';
+import farmBg from '../assets/fram-padi.jpg';
 import { getAllDiseases } from '../services/diseaseService';
 import { DISEASE_INFO } from '../services/aiService';
 
@@ -62,7 +65,12 @@ export default function Penanganan() {
             {diseases.map((disease) => {
               const sev = severityConfig[disease.severity] || severityConfig.low;
               const info = DISEASE_INFO[disease.key] || DISEASE_INFO.sehat;
-              const imageSrc = disease.image || info.image || fram;
+              const diseaseImages = {
+                blast: blastImg,
+                brownspot: brownspotImg,
+                tungro: tungroImg,
+              };
+              const imageSrc = disease.image || info.image || diseaseImages[disease.key] || farmBg;
               const mediaStyle = (!info.image && info.cardGradient) ? { background: info.cardGradient } : {};
 
               return (

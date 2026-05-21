@@ -28,6 +28,8 @@ export default function DetailPenanganan() {
   const description = disease.description || info.description;
   const sev = sevConfig[disease.severity] || sevConfig.low;
 
+  const imageSrc = disease.image || farmBg;
+
   return (
     <div className="page-shell">
       <Navbar />
@@ -46,7 +48,7 @@ export default function DetailPenanganan() {
         <h1>Solusi Penanganan</h1>
         <div className="detail-layout">
           <div className="detail-image-card">
-            <img src={farmBg} alt={disease.name} />
+            <img src={imageSrc} alt={disease.name} />
             <div>
               <h2 style={{fontSize:22,fontWeight:800,marginTop:8,marginBottom:6}}>{disease.name || info.label}</h2>
               <span style={{background:sev.bg,color:sev.color,borderRadius:'var(--radius-pill)',padding:'4px 14px',fontSize:12,fontWeight:700,display:'inline-flex',alignItems:'center',gap:5}}>

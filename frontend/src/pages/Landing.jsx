@@ -6,6 +6,11 @@ import loginImg from '../assets/images/tutorial/login.png';
 import scanImg from '../assets/images/tutorial/scan.png';
 import hasilScanImg from '../assets/images/tutorial/hasil-scan.png';
 import penangananImg from '../assets/images/tutorial/penaganan.png';
+import putriImg from '../assets/images/teams/putri.jpeg';
+import febiImg from '../assets/images/teams/febi.jpeg';
+import fransImg from '../assets/images/teams/Frans.jpeg';
+import wegaImg from '../assets/images/teams/wega.jpeg';
+import nisaImg from '../assets/images/teams/nisa.jpeg';
 
 const langkah = [
   {
@@ -50,19 +55,19 @@ const features = [
 
 const teamMembers = [
   {
-    photo: '/putri.jpeg',
+    photo: putriImg,
     name: 'Putri Dwi R',
     role: 'Fullstack',
     icon: 'ph-code',
     color: '#38bdf8',
     social: [
-      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
-      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
-      { label: 'Email', href: 'mailto:putri@example.com', icon: 'ph-envelope-simple' }
+      { label: 'Instagram', href: 'https://www.instagram.com/ptriidwirlyh?igsh=MXI1NmZrYWxvbHp2OQ==', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href:'https://www.linkedin.com/in/putri-dwi-roliyah-4bba513a7', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:putridwiroliyah26@gmail.com', icon: 'ph-envelope-simple' }
     ]
   },
   {
-    photo: '/febi.jpeg',
+    photo: febiImg,
     name: 'Febi Bahtiyar',
     role: 'Fullstack',
     icon: 'ph-code',
@@ -74,29 +79,29 @@ const teamMembers = [
     ]
   },
   {
-    photo: null,
+    photo: fransImg,
     name: 'Fransiskus W',
     role: 'AI Engineer',
     icon: 'ph-brain',
     color: '#34d399',
     initials: 'FW',
     social: [
-      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
-      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
-      { label: 'Email', href: 'mailto:fransiskus@example.com', icon: 'ph-envelope-simple' }
+      { label: 'Instagram', href: 'https://www.instagram.com/sesko_wutuk?igsh=MzFmbGhlbzRieHo0', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/fransiskus-wutuk', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:fransiskuswutuk24@gmail.com', icon: 'ph-envelope-simple' }
     ]
   },
   {
-    photo: null,
+    photo: wegaImg,
     name: 'Wega Pratiwi',
     role: 'AI Engineer',
     icon: 'ph-cpu',
     color: '#34d399',
     initials: 'WP',
     social: [
-      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
-      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
-      { label: 'Email', href: 'mailto:weka@example.com', icon: 'ph-envelope-simple' }
+      { label: 'Instagram', href: 'https://www.instagram.com/luckylighttt?igsh=aHM3dHF2bXZ5dDdz', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/wega-pratiwi-174744330/', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:wega7928@gmail.com', icon: 'ph-envelope-simple' }
     ]
   },
   {
@@ -107,22 +112,22 @@ const teamMembers = [
     color: '#fb923c',
     initials: 'RA',
     social: [
-      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
-      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
-      { label: 'Email', href: 'mailto:rifa@example.com', icon: 'ph-envelope-simple' }
+      { label: 'Instagram', href: 'https://www.instagram.com/rifaagni_?igsh=ZWxneWNoZnNwdXAw', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/rifa-agnia-3850a5249', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:rifnia04@gmail.com', icon: 'ph-envelope-simple' }
     ]
   },
   {
-    photo: null,
+    photo: nisaImg,
     name: 'Nisa Nuraini',
     role: 'Data Science',
     icon: 'ph-database',
     color: '#fb923c',
     initials: 'NN',
     social: [
-      { label: 'Instagram', href: '#', icon: 'ph-instagram-logo' },
-      { label: 'LinkedIn', href: '#', icon: 'ph-linkedin-logo' },
-      { label: 'Email', href: 'mailto:nisa@example.com', icon: 'ph-envelope-simple' }
+      { label: 'Instagram', href: 'https://www.instagram.com/nisa.nrn?igsh=N3R3d2J5MXBjdmcz', icon: 'ph-instagram-logo' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/nisa-nuraini-826026289/', icon: 'ph-linkedin-logo' },
+      { label: 'Email', href: 'mailto:nurainisa28@gmail.com', icon: 'ph-envelope-simple' }
     ]
   }
 ];

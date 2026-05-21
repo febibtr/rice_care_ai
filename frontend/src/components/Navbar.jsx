@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import logo from '../assets/logo-ricecare-ai.png';
 import { logout, getCurrentUser, isLoggedIn as checkLogin } from '../services/authService';
+
+const logo = '/logo-ricecare-ai.png';
 
 export default function Navbar() {
   const navigate = useNavigate();
