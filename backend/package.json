@@ -7,9 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint": "eslint .",
-    "seed:diseases": "node seeders/diseaseSeeder.js",
-    "seed:dummy": "node seeders/dummyDataSeeder.js",
-    "seed:all": "npm run seed:diseases && npm run seed:dummy"
+    "seed:diseases": "node seeders/diseaseSeeder.js"
   },
   "keywords": [
     "ricecare",

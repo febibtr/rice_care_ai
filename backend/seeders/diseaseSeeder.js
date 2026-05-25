@@ -9,7 +9,6 @@ const diseases = [
     name: 'Sehat',
     latinName: 'Oryza sativa (kondisi normal)',
     severity: 'none',
-    emoji: '✅',
     description:
       'Daun padi dalam kondisi optimal. Warna hijau merata, tidak ada bercak, bintik, atau perubahan warna yang mencurigakan. Pertahankan praktik budidaya yang baik untuk mencegah munculnya penyakit.',
     symptoms: ['Warna daun hijau merata', 'Tidak ada bercak atau lesi', 'Pertumbuhan normal', 'Anakan cukup banyak'],
@@ -31,7 +30,6 @@ const diseases = [
     name: 'Blast',
     latinName: 'Magnaporthe oryzae',
     severity: 'high',
-    emoji: '🔴',
     description:
       'Penyakit jamur paling merusak pada tanaman padi. Disebabkan oleh cendawan Magnaporthe oryzae yang menyerang daun, ruas batang (node blast), dan malai (neck blast). Dapat menyebabkan kehilangan hasil panen hingga 100% jika tidak segera ditangani.',
     symptoms: [
@@ -62,7 +60,6 @@ const diseases = [
     name: 'Tungro',
     latinName: 'Rice Tungro Bacilliform Virus (RTBV) & Rice Tungro Spherical Virus (RTSV)',
     severity: 'medium',
-    emoji: '🟡',
     description:
       'Penyakit virus yang disebabkan oleh dua virus berbeda (RTBV dan RTSV) dan ditularkan oleh wereng hijau (Nephotettix virescens). Merupakan penyakit virus paling merusak di Asia Selatan dan Tenggara, termasuk Indonesia.',
     symptoms: [
@@ -92,7 +89,6 @@ const diseases = [
     name: 'Brown Spot',
     latinName: 'Cochliobolus miyabeanus (Helminthosporium oryzae)',
     severity: 'medium',
-    emoji: '🟠',
     description:
       'Penyakit jamur yang sering dikaitkan dengan kondisi tanah yang kekurangan unsur hara, terutama kalium dan silika. Dapat muncul pada semua fase pertumbuhan padi. Pada serangan berat, menyebabkan daun mengering prematur dan biji hampa.',
     symptoms: [
