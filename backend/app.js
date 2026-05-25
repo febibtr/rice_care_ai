@@ -12,6 +12,12 @@ const logger = require('./utils/logger');
 const app = express();
 
 // ===========================
+// SERVER CONFIGURATION
+// ===========================
+// Wajib diaktifkan saat deploy di platform cloud (Render/Vercel) agar IP asli terbaca
+app.set('trust proxy', 1);
+
+// ===========================
 // SECURITY MIDDLEWARES
 // ===========================
 
