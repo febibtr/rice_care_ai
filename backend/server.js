@@ -12,11 +12,11 @@ const startServer = async () => {
     await connectDB();
 
     const server = app.listen(PORT, () => {
-      logger.info(`🌾 RiceCare AI Backend running`);
-      logger.info(`🚀 Server: http://localhost:${PORT}`);
-      logger.info(`📋 API: http://localhost:${PORT}/api/v1`);
-      logger.info(`💚 Health: http://localhost:${PORT}/api/v1/health`);
-      logger.info(`⚙️  Environment: ${process.env.NODE_ENV || 'development'}`);
+      logger.info(`RiceCare AI Backend running`);
+      logger.info(`Server: http://localhost:${PORT}`);
+      logger.info(`API: http://localhost:${PORT}/api/v1`);
+      logger.info(`Health: http://localhost:${PORT}/api/v1/health`);
+      logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
 
     // Graceful shutdown

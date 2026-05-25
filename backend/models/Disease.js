@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 /**
  * Model Disease - menyimpan informasi statis penyakit padi
- * Bisa di-seed dari database atau dikelola via admin
  */
 const diseaseSchema = new mongoose.Schema(
   {
@@ -46,7 +45,5 @@ const diseaseSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
-
-diseaseSchema.index({ key: 1 });
 
 module.exports = mongoose.model('Disease', diseaseSchema);

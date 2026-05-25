@@ -13,7 +13,7 @@ const hashString = (value) => {
     hash |= 0;
   }
   return Math.abs(hash);
-};
+};  
 
 const buildConfidence = (diagnosis, seed) => {
   const base = [10, 10, 10, 10];
