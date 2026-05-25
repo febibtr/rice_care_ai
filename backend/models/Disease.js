@@ -24,10 +24,6 @@ const diseaseSchema = new mongoose.Schema(
       enum: ['none', 'low', 'medium', 'high'],
       default: 'none',
     },
-    emoji: {
-      type: String,
-      default: '🌿',
-    },
     description: {
       type: String,
       required: true,
