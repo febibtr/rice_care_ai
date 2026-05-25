@@ -3,6 +3,7 @@ import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
+import ResetPasswordConfirm from './pages/ResetPasswordConfirm.jsx';
 import Scan from './pages/Scan.jsx';
 import Riwayat from './pages/Riwayat.jsx';
 import Penanganan from './pages/Penanganan.jsx';
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/reset-password/confirm" element={<ResetPasswordConfirm />} />
       <Route path="/scan" element={<ProtectedPage><Scan /></ProtectedPage>} />
       <Route path="/riwayat" element={<ProtectedPage><Riwayat /></ProtectedPage>} />
       <Route path="/penanganan" element={<ProtectedPage><Penanganan /></ProtectedPage>} />

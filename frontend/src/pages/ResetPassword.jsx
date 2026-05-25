@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { requestPasswordReset, checkEmail } from '../services/authService';
 import farmBg from '../assets/fram-padi.jpg';
 
 export default function ResetPassword() {
@@ -12,10 +13,24 @@ export default function ResetPassword() {
     e.preventDefault();
     setError('');
     if (!email) { setError('Alamat email wajib diisi.'); return; }
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    setSent(true);
+    try {
+      setLoading(true);
+      // Check if email exists
+      const emailCheck = await checkEmail({ email });
+      if (!emailCheck.exists) {
+        setLoading(false);
+        setError('Email tidak terdaftar di sistem kami.');
+        return;
+      }
+      // If email exists, request password reset
+      await requestPasswordReset({ email });
+      setLoading(false);
+      setSent(true);
+    } catch (err) {
+      setLoading(false);
+      const msg = err?.response?.data?.message || 'Gagal mengirim tautan. Coba lagi nanti.';
+      setError(msg);
+    }
   };
 
   return (
@@ -59,13 +74,13 @@ export default function ResetPassword() {
       <div className="auth-panel">
         <div className="auth-card">
           <div style={{ marginBottom: 24 }}>
-            <div style={{
+            {/* <div style={{
               width: 48, height: 48, background: 'var(--green-100)',
               borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center',
               justifyContent: 'center', marginBottom: 16, fontSize: 24
             }}>
               <i className="ph ph-lock-key-open" style={{ color: 'var(--green-600)' }}></i>
-            </div>
+            </div> */}
             <h3>Lupa Password?</h3>
             <p className="auth-subtitle">
               Masukkan email yang terdaftar. Kami akan mengirimkan tautan reset password.
@@ -89,7 +104,6 @@ export default function ResetPassword() {
               background: 'var(--green-50)', borderRadius: 'var(--radius-lg)',
               border: '1.5px solid var(--green-200)'
             }}>
-              <div style={{ fontSize: 48, marginBottom: 12 }}>📬</div>
               <h4 style={{ fontWeight: 800, color: 'var(--green-700)', marginBottom: 8 }}>
                 Email Terkirim!
               </h4>
@@ -111,10 +125,7 @@ export default function ResetPassword() {
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="form-field">
-                <label>
-                  <i className="ph ph-envelope" style={{ marginRight: 5, color: 'var(--green-600)' }}></i>
-                  Email Terdaftar
-                </label>
+                <label>Email Terdaftar</label>
                 <div className="input-group">
                   <span className="input-group-text"><i className="ph ph-envelope"></i></span>
                   <input
@@ -135,7 +146,7 @@ export default function ResetPassword() {
               >
                 {loading
                   ? <><span className="spinner-border spinner-border-sm me-2"></span>Mengirim...</>
-                  : <><i className="ph ph-paper-plane-right me-2"></i>Kirim Tautan Reset</>
+                  : <>Kirim Tautan Reset</>
                 }
               </button>
             </form>

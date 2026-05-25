@@ -34,6 +34,21 @@ const saveSession = ({ accessToken, refreshToken, user }) => {
   localStorage.setItem('ricecare_auth', 'true');
 };
 
+export const requestPasswordReset = async ({ email }) => {
+  const { data } = await api.post('/auth/request-password-reset', { email });
+  return data;
+};
+
+export const checkEmail = async ({ email }) => {
+  const { data } = await api.post('/auth/check-email', { email });
+  return data.data;
+};
+
+export const resetPassword = async ({ token, email, newPassword }) => {
+  const { data } = await api.post('/auth/reset-password', { token, email, newPassword });
+  return data;
+};
+
 export const getCurrentUser = () => {
   try {
     return JSON.parse(localStorage.getItem('ricecare_user'));

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const crypto = require('crypto');
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -182,4 +183,96 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, refreshToken, logout, getMe, changePassword };
+// Export controller functions (moved to end to ensure functions are defined first)
+
+/**
+ * @route   POST /api/v1/auth/request-password-reset
+ * @desc    Minta tautan reset password via email (tidak mengungkapkan apakah email ada)
+ * @access  Public
+ */
+const requestPasswordReset = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Jangan ungkapkan apakah email terdaftar
+      return successResponse(res, null, 'Jika email terdaftar, tautan reset telah dikirim');
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // 15 menit
+    await user.save({ validateBeforeSave: false });
+
+    const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const resetLink = `${frontend}/reset-password/confirm?token=${resetToken}&email=${encodeURIComponent(email)}`;
+
+    // Kirim email via util (jika terkonfigurasi). Jika gagal, tetap jangan ungkapkan ke user.
+    try {
+      const { sendResetEmail } = require('../utils/email');
+      await sendResetEmail({ to: email, resetLink });
+    } catch (err) {
+      logger.warn(`Could not send reset email: ${err.message}`);
+      logger.info(`Password reset link for ${email}: ${resetLink}`);
+    }
+
+    return successResponse(res, null, 'Jika email terdaftar, tautan reset telah dikirim');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @route   POST /api/v1/auth/reset-password
+ * @desc    Reset password menggunakan token yang dikirimkan lewat email
+ * @access  Public
+ */
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token, email, newPassword } = req.body;
+    if (!token || !email || !newPassword) {
+      return errorResponse(res, 'Token, email, dan password baru wajib diisi', 400);
+    }
+
+    const hashed = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await User.findOne({ email, passwordResetToken: hashed, passwordResetExpires: { $gt: Date.now() } }).select('+password');
+    if (!user) {
+      return errorResponse(res, 'Token tidak valid atau telah kadaluarsa', 400);
+    }
+
+    user.password = newPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    // Invalidate any existing refresh token so sessions are logged out
+    user.refreshToken = null;
+    await user.save();
+
+    return successResponse(res, null, 'Password berhasil direset');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @route   POST /api/v1/auth/check-email
+ * @desc    Check if email is registered (untuk validasi frontend)
+ * @access  Public
+ */
+const checkEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return errorResponse(res, 'Email wajib diisi', 400);
+    }
+
+    const user = await User.findOne({ email });
+    return successResponse(res, { exists: !!user }, 'Check email berhasil');
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, refreshToken, logout, getMe, changePassword, requestPasswordReset, resetPassword, checkEmail };

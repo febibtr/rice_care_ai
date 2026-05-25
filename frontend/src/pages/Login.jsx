@@ -48,9 +48,9 @@ export default function Login() {
       <div className="auth-panel">
         <div className="auth-card">
           <div style={{marginBottom:24}}>
-            <div style={{width:48,height:48,background:'var(--green-100)',borderRadius:'var(--radius-md)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:16,fontSize:24}}>
+            {/* <div style={{width:48,height:48,background:'var(--green-100)',borderRadius:'var(--radius-md)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:16,fontSize:24}}>
               <i className="ph ph-sign-in" style={{color:'var(--green-600)'}}></i>
-            </div>
+            </div> */}
             <h3>Login</h3>
             <p className="auth-subtitle">Masukkan kredensial akun Anda untuk melanjutkan.</p>
           </div>
@@ -63,14 +63,14 @@ export default function Login() {
 
           <form onSubmit={handleSubmit}>
             <div className="form-field">
-              <label><i className="ph ph-envelope" style={{marginRight:5,color:'var(--green-600)'}}></i>Email</label>
+              <label>Email</label>
               <div className="input-group">
                 <span className="input-group-text"><i className="ph ph-envelope"></i></span>
                 <input className="form-control" type="email" name="email" placeholder="petani@email.com" value={form.email} onChange={handleChange} required />
               </div>
             </div>
             <div className="form-field">
-              <label><i className="ph ph-lock" style={{marginRight:5,color:'var(--green-600)'}}></i>Password</label>
+              <label>Password</label>
               <div className="input-group">
                 <span className="input-group-text"><i className="ph ph-lock"></i></span>
                 <input className="form-control" type={showPass ? 'text' : 'password'} name="password" placeholder="••••••••" value={form.password} onChange={handleChange} required />
@@ -85,7 +85,7 @@ export default function Login() {
             <button className="btn btn-dark w-100" type="submit" disabled={loading}>
               {loading
                 ? <><span className="spinner-border spinner-border-sm me-2"></span>Masuk...</>
-                : <><i className="ph ph-sign-in me-2"></i>Masuk</>
+                : <>Masuk</>
               }
             </button>
           </form>
