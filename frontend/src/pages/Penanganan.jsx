@@ -33,7 +33,7 @@ export default function Penanganan() {
       .then(setDiseases)
       .catch(() => {
         setDiseases(Object.entries(DISEASE_INFO).map(([key, d]) => ({
-          key, name: d.label, emoji: d.emoji,
+          key, name: d.label,
           severity: key === 'blast' ? 'high' : key === 'sehat' ? 'none' : 'medium',
           description: d.description, treatments: d.treatments, preventions: d.preventions,
         })));

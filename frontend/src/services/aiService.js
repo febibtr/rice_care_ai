@@ -92,7 +92,6 @@ export const analyzeLeafImage = async (imageFile) => {
 export const DISEASE_INFO = {
   sehat: {
     label: 'Sehat',
-    emoji: '✅',
     icon: 'ph-leaf',
     cardGradient: 'linear-gradient(135deg, rgba(22,163,74,0.95), rgba(134,239,172,0.92))',
     severityLabel: 'Tidak ada penyakit',
@@ -113,7 +112,6 @@ export const DISEASE_INFO = {
   },
   blast: {
     label: 'Blast',
-    emoji: '🔴',
     icon: 'ph-fire',
     cardGradient: 'linear-gradient(135deg, rgba(220,38,38,0.95), rgba(251,146,60,0.9))',
     severityLabel: 'Risiko Tinggi',
@@ -135,7 +133,6 @@ export const DISEASE_INFO = {
   },
   tungro: {
     label: 'Tungro',
-    emoji: '🟡',
     icon: 'ph-bug',
     cardGradient: 'linear-gradient(135deg, rgba(245,158,11,0.95), rgba(252,211,77,0.88))',
     severityLabel: 'Risiko Sedang',
@@ -156,7 +153,6 @@ export const DISEASE_INFO = {
   },
   brownspot: {
     label: 'Brown Spot',
-    emoji: '🟠',
     icon: 'ph-warning-circle',
     cardGradient: 'linear-gradient(135deg, rgba(194,65,12,0.95), rgba(251,191,36,0.88))',
     severityLabel: 'Risiko Sedang',

@@ -51,19 +51,12 @@ export default function DetailPenanganan() {
             <img src={imageSrc} alt={disease.name} />
             <div>
               <h2 style={{fontSize:22,fontWeight:800,marginTop:8,marginBottom:6}}>{disease.name || info.label}</h2>
-              <span style={{background:sev.bg,color:sev.color,borderRadius:'var(--radius-pill)',padding:'4px 14px',fontSize:12,fontWeight:700,display:'inline-flex',alignItems:'center',gap:5}}>
-                <i className="ph ph-warning"></i> {sev.label}
-              </span>
+              <p style={{fontSize:13,color:'var(--gray-600)',lineHeight:1.6,marginTop:12,marginBottom:0}}>{description}</p>
               {disease.latinName && <p style={{fontSize:12,color:'var(--gray-400)',fontStyle:'italic',marginTop:10}}>{disease.latinName}</p>}
             </div>
           </div>
 
           <div className="detail-content-card">
-            <section>
-              <h3><i className="ph ph-leaf-fill"></i> Penjelasan</h3>
-              <p>{description}</p>
-            </section>
-
             {disease.symptoms?.length > 0 && (
               <section>
                 <h3><i className="ph ph-warning-circle"></i> Gejala</h3>
