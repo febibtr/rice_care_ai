@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import farmBg from '../assets/fram-padi.jpg';
-import loginImg from '../assets/images/tutorial/login.png';
+import registerImg from '../assets/images/tutorial/register.png';
 import scanImg from '../assets/images/tutorial/scan.png';
 import hasilScanImg from '../assets/images/tutorial/hasil-scan.png';
 import penangananImg from '../assets/images/tutorial/penaganan.png';
@@ -10,12 +10,13 @@ import putriImg from '../assets/images/teams/putri.jpeg';
 import febiImg from '../assets/images/teams/febi.jpeg';
 import fransImg from '../assets/images/teams/Frans.jpeg';
 import wegaImg from '../assets/images/teams/wega.jpeg';
+import rifaImg from '../assets/images/teams/rifa.jpg';
 import nisaImg from '../assets/images/teams/nisa.jpeg';
 
 const langkah = [
   {
     title: 'Buat Akun',
-    img: loginImg,
+    img: registerImg,
     desc: 'Daftar akun terlebih dahulu untuk menggunakan fitur RiceCare AI secara penuh.',
   },
   {
@@ -105,7 +106,7 @@ const teamMembers = [
     ]
   },
   {
-    photo: null,
+    photo: rifaImg,
     name: 'Rifa Agnia',
     role: 'Data Science',
     icon: 'ph-chart-line-up',
