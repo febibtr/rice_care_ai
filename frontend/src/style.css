@@ -590,7 +590,7 @@ img { max-width: 100%; display: block; }
   .burger-btn { display: flex; }
   .hero-section-custom { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 48px 24px 40px; }
-  .hero-right { height: 260px; }
+  .hero-right { display: none; }
   .hero-stats-row { gap: 20px; }
   .hero-float-card { display: none; }
   .feature-section,.cara-section,.info-section,.dev-section { padding: 52px 20px; }
@@ -601,7 +601,11 @@ img { max-width: 100%; display: block; }
   .cara-preview { display: none; }
   .info-grid { grid-template-columns: repeat(2,1fr); }
   .auth-layout { grid-template-columns: 1fr; }
-  .auth-cover { display: none; }
+  .auth-cover {
+    display: none;
+    background: none !important;
+    min-height: 0;
+  }
   .auth-panel { padding: 24px 16px; }
   .scan-layout { grid-template-columns: 1fr; }
   .scan-main,.cards-main,.detail-main,.profile-main { padding: 24px 16px 48px; }
