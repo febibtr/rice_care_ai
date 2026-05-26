@@ -281,7 +281,7 @@ img { max-width: 100%; display: block; }
 }
 .section-title {
   font-family: var(--font-display); font-size: clamp(26px,3vw,42px);
-  font-weight: 700; color: var(--black); letter-spacing: -1px; margin-bottom: 48px;
+  font-weight: 700; color: var(--black); letter-spacing: -1px; margin-bottom: 16px;
 }
 .section-title span { color: var(--green-600); }
 .feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
@@ -1568,7 +1568,7 @@ img { max-width: 100%; display: block; }
   text-align: center;
   color: var(--gray-400);
   font-size: 15px;
-  margin: -8px 0 48px;
+  margin: -4px 0 48px;
 }
 
 /* Single scrollable row */
