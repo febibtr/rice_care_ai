@@ -295,7 +295,6 @@ export default function Landing() {
           </div>
           <h2 className="section-title"><span>Team</span></h2>
           <p className="dev-subtitle">Membangun solusi untuk petani Indonesia.</p>
-
           <div className="dev-row">
             {teamMembers.map((m, i) => (
               <div

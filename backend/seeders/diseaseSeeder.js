@@ -127,7 +127,7 @@ const seed = async () => {
     // Insert data baru
     const result = await Disease.insertMany(diseases);
     logger.info(`✅ ${result.length} diseases seeded successfully:`);
-    result.forEach((d) => logger.info(`   - ${d.emoji} ${d.name} (${d.key})`));
+    result.forEach((d) => logger.info(`   - ${d.name} (${d.key})`));
 
     await mongoose.connection.close();
     logger.info('MongoDB connection closed. Seeding complete!');
