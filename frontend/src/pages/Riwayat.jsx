@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http:/
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI — Powered by RicecareAI</p>
+      <p className="footer-copy">© 2025 RiceCare AI</p>
     </div>
   </footer>
 );
