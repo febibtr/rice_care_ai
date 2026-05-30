@@ -68,8 +68,8 @@ export default function Navbar() {
               type="button"
               onClick={() => setBerandaOpen(o => !o)}
             >
-              <i className="ph ph-house"></i> Beranda
-              <i className={`ph ph-caret-down nav-caret ${berandaOpen ? 'rotated' : ''}`}></i>
+              <i className="ph ph-house" style={{ transform: 'none' }}></i> Beranda
+              <i className={`ph ${berandaOpen ? 'ph-caret-up' : 'ph-caret-down'} nav-caret`} style={{ transform: 'none' }}></i>
             </button>
             {berandaOpen && (
               <div className="dropdown-menu-custom show">
@@ -99,8 +99,8 @@ export default function Navbar() {
               type="button"
               onClick={() => setDeteksiOpen(o => !o)}
             >
-              <i className="ph ph-scan"></i> Deteksi
-              <i className={`ph ph-caret-down nav-caret ${deteksiOpen ? 'rotated' : ''}`}></i>
+              <i className="ph ph-scan" style={{ transform: 'none' }}></i> Deteksi
+              <i className={`ph ${deteksiOpen ? 'ph-caret-up' : 'ph-caret-down'} nav-caret`} style={{ transform: 'none' }}></i>
             </button>
             {deteksiOpen && (
               <div className="dropdown-menu-custom show">
@@ -134,7 +134,7 @@ export default function Navbar() {
                     {user.name.split(' ')[0]}
                   </span>
                 )}
-                <i className={`ph ph-caret-down nav-caret ${userOpen ? 'rotated' : ''}`} style={{fontSize:12}}></i>
+                <i className={`ph ${userOpen ? 'ph-caret-up' : 'ph-caret-down'} nav-caret`} style={{ fontSize: 12, transform: 'none' }}></i>
               </button>
               {userOpen && (
                 <div className="user-dropdown show">
@@ -180,8 +180,8 @@ export default function Navbar() {
             type="button"
             onClick={() => setBerandaOpen(o => !o)}
           >
-            <i className="ph ph-house"></i> Beranda
-            <i className={`ph ph-caret-${berandaOpen ? 'up' : 'down'} mobile-nav-caret`}></i>
+            <i className="ph ph-house" style={{ transform: 'none' }}></i> Beranda
+            <i className={`ph ph-caret-${berandaOpen ? 'up' : 'down'} mobile-nav-caret`} style={{ transform: 'none' }}></i>
           </button>
           {berandaOpen && (
             <div className="mobile-submenu">
@@ -210,8 +210,8 @@ export default function Navbar() {
             type="button"
             onClick={() => setDeteksiOpen(o => !o)}
           >
-            <i className="ph ph-scan"></i> Deteksi
-            <i className={`ph ph-caret-${deteksiOpen ? 'up' : 'down'} mobile-nav-caret`}></i>
+            <i className="ph ph-scan" style={{ transform: 'none' }}></i> Deteksi
+            <i className={`ph ph-caret-${deteksiOpen ? 'up' : 'down'} mobile-nav-caret`} style={{ transform: 'none' }}></i>
           </button>
           {deteksiOpen && (
             <div className="mobile-submenu">
