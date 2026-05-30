@@ -442,8 +442,8 @@ export default function Scan() {
           </div>
         )}
       </main>
-      <footer className="footer-box">
-        <p><b>© RiceCareAi</b></p>
+      <footer className="footer-box" style={{ textAlign: 'center' }}>
+        <p className="footer-copy">© 2026 RiceCare AI</p>
       </footer>
     </div>
   );
