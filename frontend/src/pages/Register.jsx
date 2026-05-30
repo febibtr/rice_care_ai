@@ -5,6 +5,8 @@ import { register } from '../services/authService';
 
 export default function Register() {
   const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -86,14 +88,20 @@ export default function Register() {
               <label>Password</label>
               <div className="input-group">
                 <span className="input-group-text"><i className="ph ph-lock"></i></span>
-                <input className="form-control" type="password" name="password" placeholder="Min. 6 karakter" value={form.password} onChange={handleChange} required />
+                <input className="form-control" type={showPass ? 'text' : 'password'} name="password" placeholder="Min. 6 karakter" value={form.password} onChange={handleChange} required />
+                <button className="input-group-text" type="button" onClick={() => setShowPass(!showPass)}>
+                  <i className={`ph ${showPass ? 'ph-eye-slash' : 'ph-eye'}`}></i>
+                </button>
               </div>
             </div>
             <div className="form-field" style={{marginBottom:24}}>
               <label>Konfirmasi Password</label>
               <div className="input-group">
                 <span className="input-group-text"><i className="ph ph-lock-key"></i></span>
-                <input className="form-control" type="password" name="confirmPassword" placeholder="Ulangi password" value={form.confirmPassword} onChange={handleChange} required />
+                <input className="form-control" type={showConfirmPass ? 'text' : 'password'} name="confirmPassword" placeholder="Ulangi password" value={form.confirmPassword} onChange={handleChange} required />
+                <button className="input-group-text" type="button" onClick={() => setShowConfirmPass(!showConfirmPass)}>
+                  <i className={`ph ${showConfirmPass ? 'ph-eye-slash' : 'ph-eye'}`}></i>
+                </button>
               </div>
             </div>
             <button className="btn btn-dark w-100" type="submit" disabled={loading}>
