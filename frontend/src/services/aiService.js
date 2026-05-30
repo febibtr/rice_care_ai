@@ -68,22 +68,48 @@ const pickNote = (diagnosis, seed) => {
  * @returns {{ diagnosis, confidence, aiNotes, inferenceTimeMs }}
  */
 export const analyzeLeafImage = async (imageFile) => {
-  const startTime = Date.now();
-  const seedSource = `${imageFile.name}-${imageFile.size}-${imageFile.type}`;
-  const seed = hashString(seedSource);
+  try {
+    // 1. Siapkan data gambar untuk dikirim
+    const formData = new FormData();
+    // Pastikan 'file' adalah nama key yang diminta oleh API Hugging Face Anda
+    formData.append('file', imageFile); 
 
-  const diagnosis = DIAGNOSIS_CLASSES[seed % DIAGNOSIS_CLASSES.length];
-  const confidence = buildConfidence(diagnosis, seed);
-  const topConfidence = Math.max(...Object.values(confidence));
-  const aiNotes = pickNote(diagnosis, seed);
+    // 2. Tembak API Hugging Face (Ganti '/predict' dengan endpoint asli Anda jika berbeda)
+    const startTime = Date.now();
+    const response = await fetch('https://egott-ricecareai.hf.space/predict', {
+      method: 'POST',
+      body: formData, // Kirim sebagai multipart/form-data
+    });
 
-  return {
-    diagnosis,
-    confidence,
-    topConfidence,
-    aiNotes,
-    inferenceTimeMs: Date.now() - startTime,
-  };
+    if (!response.ok) {
+      throw new Error(`Error dari server AI: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // 3. Normalisasi hasil prediksi API agar sesuai dengan key DISEASE_INFO
+    let diagnosisKey = (data.prediction || 'sehat').toLowerCase().replace(/[^a-z]/g, '');
+    if (diagnosisKey.includes('brown')) diagnosisKey = 'brownspot';
+    if (!['sehat', 'blast', 'tungro', 'brownspot'].includes(diagnosisKey)) {
+      diagnosisKey = 'sehat'; // Fallback jika model mengembalikan nilai di luar kelas yang diketahui
+    }
+
+    // 4. Menyesuaikan format confidence (jika API mengembalikan desimal 0-1, ubah ke persentase 0-100)
+    let confPercent = data.confidence || 0.95;
+    if (confPercent <= 1 && confPercent > 0) confPercent *= 100;
+
+    return {
+      diagnosis: diagnosisKey,
+      confidence: {}, // Kosongkan karena API baru hanya mengembalikan satu nilai tertinggi
+      topConfidence: confPercent,
+      aiNotes: pickNote(diagnosisKey, Date.now()), // Tetap gunakan catatan dinamis lokal
+      inferenceTimeMs: Date.now() - startTime,
+    };
+
+  } catch (error) {
+    console.error("Gagal memanggil API Hugging Face:", error);
+    throw error;
+  }
 };
 
 /**
