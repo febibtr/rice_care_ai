@@ -11,7 +11,7 @@ import { DISEASE_INFO } from '../services/aiService';
 const Footer = () => (
   <footer className="footer-box">
     <div className="footer-bottom" style={{borderTop:'none',paddingTop:0,width:'100%',justifyContent:'center',flexDirection:'column',gap:4,textAlign:'center'}}>
-      <p className="footer-copy">© 2025 RiceCare AI</p>
+      <p className="footer-copy">© 2026 RiceCare AI</p>
     </div>
   </footer>
 );
