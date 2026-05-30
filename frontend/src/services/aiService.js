@@ -100,7 +100,7 @@ export const analyzeLeafImage = async (imageFile) => {
 
     return {
       diagnosis: diagnosisKey,
-      confidence: {}, // Kosongkan karena API baru hanya mengembalikan satu nilai tertinggi
+      confidence: { [diagnosisKey]: confPercent },
       topConfidence: confPercent,
       aiNotes: pickNote(diagnosisKey, Date.now()), // Tetap gunakan catatan dinamis lokal
       inferenceTimeMs: Date.now() - startTime,

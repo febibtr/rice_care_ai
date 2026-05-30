@@ -10,6 +10,7 @@ export const createScan = async (imageFile, result) => {
   formData.append('image', imageFile);
   formData.append('diagnosis', result.diagnosis);
   formData.append('confidence', JSON.stringify(result.confidence));
+  if (result.topConfidence) formData.append('topConfidence', String(result.topConfidence));
   if (result.aiNotes) formData.append('aiNotes', result.aiNotes);
   if (result.inferenceTimeMs) formData.append('inferenceTimeMs', String(result.inferenceTimeMs));
 

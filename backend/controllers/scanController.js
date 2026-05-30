@@ -21,7 +21,7 @@ const createScan = async (req, res, next) => {
       return errorResponse(res, 'File gambar wajib diunggah', 400);
     }
 
-    const { diagnosis, confidence, aiNotes, inferenceTimeMs } = req.body;
+    const { diagnosis, confidence, topConfidence: reqTopConfidence, aiNotes, inferenceTimeMs } = req.body;
 
     // Validasi confidence adalah JSON valid
     let parsedConfidence;
@@ -38,7 +38,7 @@ const createScan = async (req, res, next) => {
     }
 
     const imageUrl = `/uploads/${req.file.filename}`;
-    const topConfidence = parsedConfidence[diagnosis] || 0;
+    const topConfidence = reqTopConfidence ? parseFloat(reqTopConfidence) : (parsedConfidence[diagnosis] || 0);
 
     const scan = await Scan.create({
       user: req.user._id,

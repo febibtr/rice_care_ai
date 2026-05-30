@@ -65,9 +65,9 @@ router.post('/logout', authenticate, logout);
 router.get('/me', authenticate, getMe);
 router.patch('/change-password', authenticate, changePasswordRules, validate, changePassword);
 // Rate limiters
-const requestResetLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 5, message: 'Terlalu banyak permintaan, coba lagi nanti.' });
-const resetLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 10, message: 'Terlalu banyak permintaan, coba lagi nanti.' });
-const checkEmailLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 20, message: 'Terlalu banyak permintaan, coba lagi nanti.' });
+const requestResetLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 5, message: { status: 'error', message: 'Batas tercapai. Anda hanya bisa mencoba 5 kali per jam.' } });
+const resetLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 10, message: { status: 'error', message: 'Terlalu banyak percobaan reset. Coba lagi nanti.' } });
+const checkEmailLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 20, message: { status: 'error', message: 'Terlalu banyak permintaan pengecekan. Coba lagi nanti.' } });
 // Check email (gunakan untuk validasi frontend)
 router.post('/check-email', checkEmailLimiter, checkEmailRules, validate, checkEmail);
 router.post('/request-password-reset', requestResetLimiter, requestResetRules, validate, requestPasswordReset);

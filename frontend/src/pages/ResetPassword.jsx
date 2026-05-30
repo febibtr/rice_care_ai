@@ -28,7 +28,8 @@ export default function ResetPassword() {
       setSent(true);
     } catch (err) {
       setLoading(false);
-      const msg = err?.response?.data?.message || 'Gagal mengirim tautan. Coba lagi nanti.';
+      const data = err?.response?.data;
+      const msg = data?.message || (typeof data === 'string' ? data : 'Gagal mengirim tautan. Coba lagi nanti.');
       setError(msg);
     }
   };
