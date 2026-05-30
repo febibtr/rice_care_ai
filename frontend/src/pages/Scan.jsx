@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import { analyzeLeafImage, DISEASE_INFO } from '../services/aiService';
 import { createScan } from '../services/scanService';
@@ -429,9 +430,14 @@ export default function Scan() {
 
             <div className="result-footer">
               <span className="infer-time text-muted small">⏱ Inferensi: {result.inferenceTimeMs}ms</span>
-              <button className="btn btn-outline-secondary btn-sm result-reset-btn" onClick={resetAll}>
-                <i className="bi bi-arrow-repeat me-1"></i>Analisis Gambar Lain
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button className="btn btn-outline-secondary btn-sm result-reset-btn" onClick={resetAll}>
+                  <i className="bi bi-arrow-repeat me-1"></i>Analisis Gambar Lain
+                </button>
+                <Link to="/penanganan" className="btn btn-success btn-sm" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <i className="ph ph-shield-check me-1"></i>Penanganan
+                </Link>
+              </div>
             </div>
           </div>
         )}
