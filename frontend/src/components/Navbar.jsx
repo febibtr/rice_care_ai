@@ -10,9 +10,12 @@ export default function Navbar() {
   const user = getCurrentUser();
   const [menuOpen, setMenuOpen]     = useState(false);
   const [deteksiOpen, setDeteksiOpen] = useState(false);
+  const [berandaOpen, setBerandaOpen] = useState(false);
   const [userOpen, setUserOpen]     = useState(false);
   const deteksiRef = useRef(null);
   const mobileDeteksiRef = useRef(null);
+  const berandaRef = useRef(null);
+  const mobileBerandaRef = useRef(null);
   const userRef    = useRef(null);
 
   // Close dropdowns when clicking outside
@@ -20,8 +23,11 @@ export default function Navbar() {
     const handler = (e) => {
       const clickedOutsideDeteksi = deteksiRef.current && !deteksiRef.current.contains(e.target) &&
         (!mobileDeteksiRef.current || !mobileDeteksiRef.current.contains(e.target));
+      const clickedOutsideBeranda = berandaRef.current && !berandaRef.current.contains(e.target) &&
+        (!mobileBerandaRef.current || !mobileBerandaRef.current.contains(e.target));
 
       if (clickedOutsideDeteksi) setDeteksiOpen(false);
+      if (clickedOutsideBeranda) setBerandaOpen(false);
       if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
     };
     document.addEventListener('mousedown', handler);
@@ -42,7 +48,7 @@ export default function Navbar() {
 
   const requireAuthPath = (path) => (loggedIn ? path : '/register');
   const firstLetter = user?.name?.[0]?.toUpperCase() || '?';
-  const closeMenu = () => { setMenuOpen(false); setDeteksiOpen(false); setUserOpen(false); };
+  const closeMenu = () => { setMenuOpen(false); setDeteksiOpen(false); setBerandaOpen(false); setUserOpen(false); };
 
   return (
     <>
@@ -55,9 +61,36 @@ export default function Navbar() {
 
         {/* Desktop nav-center */}
         <div className="nav-center">
-          <NavLink className="nav-link" to="/">
-            <i className="ph ph-house"></i> Beranda
-          </NavLink>
+          {/* Beranda dropdown */}
+          <div className="nav-dropdown" ref={berandaRef}>
+            <button
+              className={`nav-link nav-dropdown-button ${berandaOpen ? 'active' : ''}`}
+              type="button"
+              onClick={() => setBerandaOpen(o => !o)}
+            >
+              <i className="ph ph-house"></i> Beranda
+              <i className={`ph ph-caret-down nav-caret ${berandaOpen ? 'rotated' : ''}`}></i>
+            </button>
+            {berandaOpen && (
+              <div className="dropdown-menu-custom show">
+                <Link to="/" onClick={() => setBerandaOpen(false)}>
+                  <i className="ph ph-house-line"></i> Halaman Utama
+                </Link>
+                <a href="/#fitur" onClick={() => setBerandaOpen(false)}>
+                  <i className="ph ph-lightning"></i> Fitur
+                </a>
+                <a href="/#panduan" onClick={() => setBerandaOpen(false)}>
+                  <i className="ph ph-map-trifold"></i> Panduan
+                </a>
+                <a href="/#info-ai" onClick={() => setBerandaOpen(false)}>
+                  <i className="ph ph-info"></i> Info
+                </a>
+                <a href="/#team" onClick={() => setBerandaOpen(false)}>
+                  <i className="ph ph-users-three"></i> Team
+                </a>
+              </div>
+            )}
+          </div>
 
           {/* Deteksi dropdown — click-based */}
           <div className="nav-dropdown" ref={deteksiRef}>
@@ -84,22 +117,6 @@ export default function Navbar() {
           <NavLink className="nav-link" to={requireAuthPath('/penanganan')}>
             <i className="ph ph-shield-check"></i> Penanganan
           </NavLink>
-
-          <a className="nav-link" href="/#fitur">
-            <i className="ph ph-lightning"></i> Fitur
-          </a>
-
-          <a className="nav-link" href="/#panduan">
-            <i className="ph ph-map-trifold"></i> Panduan
-          </a>
-
-          <a className="nav-link" href="/#info-ai">
-            <i className="ph ph-info"></i> Info
-          </a>
-
-          <a className="nav-link" href="/#team">
-            <i className="ph ph-users-three"></i> Team
-          </a>
         </div>
 
         {/* Desktop actions */}
@@ -157,9 +174,35 @@ export default function Navbar() {
 
       {/* Mobile nav overlay */}
       <div className={`mobile-nav ${menuOpen ? 'open' : ''}`}>
-        <Link to="/" onClick={closeMenu} className="mobile-nav-item">
-          <i className="ph ph-house"></i> Beranda
-        </Link>
+        <div ref={mobileBerandaRef}>
+          <button
+            className="mobile-nav-item mobile-nav-toggle"
+            type="button"
+            onClick={() => setBerandaOpen(o => !o)}
+          >
+            <i className="ph ph-house"></i> Beranda
+            <i className={`ph ph-caret-${berandaOpen ? 'up' : 'down'} mobile-nav-caret`}></i>
+          </button>
+          {berandaOpen && (
+            <div className="mobile-submenu">
+              <Link to="/" onClick={closeMenu}>
+                <i className="ph ph-house-line"></i> Halaman Utama
+              </Link>
+              <a href="/#fitur" onClick={closeMenu}>
+                <i className="ph ph-lightning"></i> Fitur
+              </a>
+              <a href="/#panduan" onClick={closeMenu}>
+                <i className="ph ph-map-trifold"></i> Panduan
+              </a>
+              <a href="/#info-ai" onClick={closeMenu}>
+                <i className="ph ph-info"></i> Info AI
+              </a>
+              <a href="/#team" onClick={closeMenu}>
+                <i className="ph ph-users-three"></i> Team
+              </a>
+            </div>
+          )}
+        </div>
 
         <div ref={mobileDeteksiRef}>
           <button
@@ -185,22 +228,6 @@ export default function Navbar() {
         <Link to={requireAuthPath('/penanganan')} onClick={closeMenu} className="mobile-nav-item">
           <i className="ph ph-shield-check"></i> Penanganan
         </Link>
-
-        <a href="/#fitur" onClick={closeMenu} className="mobile-nav-item">
-          <i className="ph ph-lightning"></i> Fitur
-        </a>
-
-        <a href="/#panduan" onClick={closeMenu} className="mobile-nav-item">
-          <i className="ph ph-map-trifold"></i> Panduan
-        </a>
-
-        <a href="/#info-ai" onClick={closeMenu} className="mobile-nav-item">
-          <i className="ph ph-info"></i> Info AI
-        </a>
-
-        <a href="/#team" onClick={closeMenu} className="mobile-nav-item">
-          <i className="ph ph-users-three"></i> Team
-        </a>
 
         <div className="mobile-nav-divider"></div>
 

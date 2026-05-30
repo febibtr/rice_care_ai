@@ -29,7 +29,10 @@ app.use(helmet({
 // CORS
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000').split(',');
+    // Ambil URL dari .env jika ada, lalu gabungkan dengan URL lokal
+    const envOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : [];
+    const allowedOrigins = [...envOrigins, 'http://localhost:3000', 'http://localhost:5173'];
+    
     // Allow requests with no origin (mobile apps, Postman, curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
