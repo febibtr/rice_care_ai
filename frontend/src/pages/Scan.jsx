@@ -168,9 +168,6 @@ export default function Scan() {
 
         {/* ── HEADER ── */}
         <div className="scan-header">
-          <div className="scan-header-icon">
-            <i className="ph ph-leaf"></i>
-          </div>
           <div>
             <h1>Deteksi Penyakit Padi</h1>
             <p>Analisis cerdas berbasis AI untuk mendeteksi penyakit pada daun padi secara akurat.</p>
