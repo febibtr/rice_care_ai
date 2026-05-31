@@ -1,42 +1,9 @@
 /**
  * aiService.js
- * Dummy model AI MobileNetV2 lokal untuk deteksi penyakit daun padi
- * Digunakan agar fitur deteksi dapat berjalan tanpa API eksternal.
+ * Service untuk deteksi penyakit daun padi menggunakan API Hugging Face
  */
 
-const DIAGNOSIS_CLASSES = ['sehat', 'blast', 'tungro', 'brownspot'];
-
-const hashString = (value) => {
-  let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = ((hash << 5) - hash) + value.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-};  
-
-const buildConfidence = (diagnosis, seed) => {
-  const base = [10, 10, 10, 10];
-  const idx = DIAGNOSIS_CLASSES.indexOf(diagnosis);
-  const main = 60 + (seed % 31);
-  base[idx] = main;
-
-  let total = base.reduce((acc, value) => acc + value, 0);
-  const scores = base.map((score, i) => {
-    if (i === idx) return score;
-    const add = ((seed >> (i * 4)) % 10);
-    total += add;
-    return score + add;
-  });
-
-  const diff = 100 - scores.reduce((acc, value) => acc + value, 0);
-  scores[idx] += diff;
-
-  return DIAGNOSIS_CLASSES.reduce((obj, key, i) => {
-    obj[key] = Math.max(0, Math.min(100, Math.round(scores[i])));
-    return obj;
-  }, {});
-};
+const DIAGNOSIS_CLASSES = ['sehat', 'blast', 'tungro', 'brownspot', 'unknown'];
 
 const aiNotesByDiagnosis = {
   sehat: [
@@ -55,6 +22,10 @@ const aiNotesByDiagnosis = {
     'Bercak kecil coklat dengan halo kuning bertebaran pada daun.',
     'Pattern bercak oval pada daun mengarah ke brown spot.',
   ],
+  unknown: [
+    'Citra tidak dikenali sebagai penyakit padi yang umum.',
+    'Pastikan foto fokus pada bagian daun yang bermasalah.',
+  ],
 };
 
 const pickNote = (diagnosis, seed) => {
@@ -63,7 +34,7 @@ const pickNote = (diagnosis, seed) => {
 };
 
 /**
- * Dummy AI: analisis gambar daun padi secara lokal
+ * Analisis gambar daun padi menggunakan API eksternal
  * @param {File} imageFile
  * @returns {{ diagnosis, confidence, aiNotes, inferenceTimeMs }}
  */
@@ -74,9 +45,9 @@ export const analyzeLeafImage = async (imageFile) => {
     // Pastikan 'file' adalah nama key yang diminta oleh API Hugging Face Anda
     formData.append('file', imageFile); 
 
-    // 2. Tembak API Hugging Face (Ganti '/predict' dengan endpoint asli Anda jika berbeda)
+    // 2. Tembak API Hugging Face
     const startTime = Date.now();
-    const response = await fetch('https://egott-ricecareai.hf.space/predict', {
+    const response = await fetch('https://egott-ricecare-ai.hf.space/predict', {
       method: 'POST',
       body: formData, // Kirim sebagai multipart/form-data
     });
@@ -90,8 +61,8 @@ export const analyzeLeafImage = async (imageFile) => {
     // 3. Normalisasi hasil prediksi API agar sesuai dengan key DISEASE_INFO
     let diagnosisKey = (data.prediction || 'sehat').toLowerCase().replace(/[^a-z]/g, '');
     if (diagnosisKey.includes('brown')) diagnosisKey = 'brownspot';
-    if (!['sehat', 'blast', 'tungro', 'brownspot'].includes(diagnosisKey)) {
-      diagnosisKey = 'sehat'; // Fallback jika model mengembalikan nilai di luar kelas yang diketahui
+    if (!DIAGNOSIS_CLASSES.includes(diagnosisKey)) {
+      diagnosisKey = 'unknown'; // Fallback jika model mengembalikan nilai di luar kelas yang diketahui
     }
 
     // 4. Menyesuaikan format confidence (jika API mengembalikan desimal 0-1, ubah ke persentase 0-100)
@@ -196,6 +167,23 @@ export const DISEASE_INFO = {
       'Pastikan kecukupan kalium dan silika sejak awal tanam.',
       'Gunakan benih sehat dengan seed treatment fungisida.',
       'Jaga kondisi lahan tidak terlalu lembap.',
+    ],
+  },
+  unknown: {
+    label: 'Tidak Dikenali',
+    icon: 'ph-question',
+    cardGradient: 'linear-gradient(135deg, rgba(107,114,128,0.95), rgba(209,213,219,0.88))',
+    severityLabel: 'Tidak Diketahui',
+    severityColor: '#6b7280',
+    iconColor: '#6b7280',
+    iconBg: 'rgba(255,255,255,0.22)',
+    description: 'AI tidak dapat mengidentifikasi penyakit dengan pasti. Hal ini bisa terjadi karena kualitas gambar kurang baik atau objek bukan merupakan daun padi.',
+    treatments: [
+      'Ambil ulang foto dengan pencahayaan yang lebih baik.',
+      'Pastikan objek daun padi berada tepat di tengah frame.',
+    ],
+    preventions: [
+      'Gunakan kamera dengan resolusi minimal 2MP.',
     ],
   },
 };
