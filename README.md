@@ -98,8 +98,6 @@ npm run dev
 cd frontend
 npm run dev
 ```
-Akses aplikasi melalui `http://localhost:5173`.
-
 ---
 
 © 2025-2026 RiceCare AI Team. Dibuat untuk petani Indonesia.
