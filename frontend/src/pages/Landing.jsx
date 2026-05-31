@@ -184,12 +184,12 @@ export default function Landing() {
                 <div className="lbl">Dataset Citra</div>
               </div>
               <div className="hero-stat">
-                <div className="num">95<span>%</span></div>
+                <div className="num">90<span>%</span></div>
                 <div className="lbl">Akurasi Model</div>
               </div>
               <div className="hero-stat">
                 <div className="num">4</div>
-                <div className="lbl">Kategori</div>
+                <div className="lbl">Kelas</div>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@ export default function Landing() {
             <div className="info-box reveal" ref={addReveal} style={{transitionDelay:'.2s'}}>
               <div className="info-box-icon-v2"><i className="ph ph-sliders-horizontal"></i></div>
               <h4>Threshold</h4>
-              <p>Confidence AI di atas 75% untuk memastikan hasil diagnosis yang dapat diandalkan petani.</p>
+              <p>Confidence AI di atas 85% untuk memastikan hasil diagnosis yang dapat diandalkan petani.</p>
             </div>
             <div className="info-box reveal" ref={addReveal} style={{transitionDelay:'.3s'}}>
               <div className="info-box-icon-v2"><i className="ph ph-chart-line-up"></i></div>
