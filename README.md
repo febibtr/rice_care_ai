@@ -4,8 +4,9 @@ RiceCare AI adalah platform berbasis web yang menggunakan kecerdasan buatan (CNN
 
 ## 🚀 Teknologi yang Digunakan
 
-- **Frontend:** React.js, Vite, Bootstrap, Phosphor Icons.
-- **Backend:** Node.js, Express.js, MongoDB (Mongoose).
+- **Frontend:** React.js, Vite, **Axios** (API Client), Bootstrap, Phosphor Icons.
+- **Backend:** Node.js, Express.js, MongoDB & Mongoose (Database), **JSON Web Token (JWT)**, **Multer** (File Upload), **Sharp** (Image Processing), **BcryptJS** (Password Hashing).
+- **Security & Logging:** **Helmet**, **Express Rate Limit**, **Morgan**, **Winston** (Logger).
 - **AI Model:** CNN MobileNetV2 (Hugging Face Spaces API).
 
 ---
