@@ -404,6 +404,7 @@ export default function Scan() {
                 <i className={`ph ${info.icon}`} style={{ color: info.iconColor || info.severityColor, fontSize: 28 }}></i>
               </div>
               <div>
+                <div className="result-stat-label" style={{ marginBottom: '4px' }}>Prediksi</div>
                 <div className="result-title">{info.label}</div>
                 <div className="result-subtitle">{info.severityLabel}</div>
               </div>
@@ -411,10 +412,6 @@ export default function Scan() {
             </div>
 
             <div className="result-stats-grid">
-              <div className="result-stat-card">
-                <div className="result-stat-label">Prediksi</div>
-                <div className="result-stat-value" style={{ color: info.severityColor }}>{info.label}</div>
-              </div>
               <div className="result-stat-card">
                 <div className="result-stat-label">Confidence</div>
                 <div className="result-stat-value">{Math.round(result.topConfidence)}%</div>
