@@ -416,7 +416,7 @@ export default function Scan() {
                 <div className="result-stat-label">Confidence</div>
                 <div className="result-stat-value">{Math.round(result.topConfidence)}%</div>
               </div>
-              <div className="result-stat-card result-stat-card-full">
+              <div className="result-stat-card">
                 <div className="result-stat-label">Keterangan singkat</div>
                 <div className="result-stat-note">{result.aiNotes || info.description}</div>
               </div>
