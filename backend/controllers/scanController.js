@@ -32,7 +32,7 @@ const createScan = async (req, res, next) => {
     }
 
     // Validasi diagnosis valid
-    const validDiagnoses = ['sehat', 'blast', 'tungro', 'brownspot'];
+    const validDiagnoses = ['sehat', 'blast', 'tungro', 'brownspot', 'unknown'];
     if (!validDiagnoses.includes(diagnosis)) {
       return errorResponse(res, `Diagnosis tidak valid. Pilih dari: ${validDiagnoses.join(', ')}`, 400);
     }
@@ -89,7 +89,7 @@ const getMyScan = async (req, res, next) => {
     const skip = (pageNum - 1) * limitNum;
 
     // Build filter
-    const filter = { user: req.user._id };
+    const filter = { user: req.user._id, isDeleted: { $ne: true } };
     if (diagnosis && ['sehat', 'blast', 'tungro', 'brownspot'].includes(diagnosis)) {
       filter.diagnosis = diagnosis;
     }
@@ -131,7 +131,7 @@ const getMyScan = async (req, res, next) => {
  */
 const getScanById = async (req, res, next) => {
   try {
-    const scan = await Scan.findOne({ _id: req.params.id, user: req.user._id });
+    const scan = await Scan.findOne({ _id: req.params.id, user: req.user._id, isDeleted: { $ne: true } });
     if (!scan) return notFoundResponse(res, 'Data scan tidak ditemukan');
 
     return successResponse(res, { scan });
@@ -150,8 +150,13 @@ const deleteScan = async (req, res, next) => {
     const scan = await Scan.findOne({ _id: req.params.id, user: req.user._id });
     if (!scan) return notFoundResponse(res, 'Data scan tidak ditemukan');
 
+    if (scan.isDeleted) return successResponse(res, null, 'Data scan sudah dihapus');
+
     scan.isDeleted = true;
     await scan.save();
+
+    // Kurangi scan count di user
+    await User.findByIdAndUpdate(req.user._id, { $inc: { scanCount: -1 } });
 
     return successResponse(res, null, 'Data scan berhasil dihapus');
   } catch (error) {
@@ -169,20 +174,20 @@ const getMyScanStats = async (req, res, next) => {
     const userId = req.user._id;
 
     const [totalScans, diagnosisStats, recentScans] = await Promise.all([
-      Scan.countDocuments({ user: userId }),
+      Scan.countDocuments({ user: userId, isDeleted: { $ne: true } }),
       Scan.aggregate([
-        { $match: { user: userId, isDeleted: false } },
+        { $match: { user: userId, isDeleted: { $ne: true } } },
         { $group: { _id: '$diagnosis', count: { $sum: 1 } } },
         { $sort: { count: -1 } },
       ]),
-      Scan.find({ user: userId })
+      Scan.find({ user: userId, isDeleted: { $ne: true } })
         .sort({ createdAt: -1 })
         .limit(5)
         .lean(),
     ]);
 
     // Format diagnosis breakdown
-    const breakdown = { sehat: 0, blast: 0, tungro: 0, brownspot: 0 };
+    const breakdown = { sehat: 0, blast: 0, tungro: 0, brownspot: 0, unknown: 0 };
     diagnosisStats.forEach((s) => { breakdown[s._id] = s.count; });
 
     return successResponse(res, {

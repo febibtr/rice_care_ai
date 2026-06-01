@@ -34,10 +34,15 @@ export default function Profil() {
     const fetchStats = async () => {
       try {
         const { data } = await api.get('/scans/stats/summary');
-        const { totalScans, breakdown } = data.data;
+        const { totalScans, breakdown = {} } = data.data;
+        
+        // Hitung terdeteksi hanya untuk kategori penyakit asli
+        const penyakitKeys = ['blast', 'tungro', 'brownspot'];
+        const totalTerdeteksi = penyakitKeys.reduce((acc, key) => acc + (breakdown[key] || 0), 0);
+
         setStats({
           totalScan: totalScans,
-          terdeteksi: totalScans - (breakdown.sehat || 0),
+          terdeteksi: totalTerdeteksi,
           sehat: breakdown.sehat || 0,
         });
       } catch (err) {
