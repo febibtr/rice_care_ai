@@ -60,6 +60,7 @@ export const analyzeLeafImage = async (imageFile) => {
 
     // 3. Normalisasi hasil prediksi API agar sesuai dengan key DISEASE_INFO
     let diagnosisKey = (data.prediction || 'sehat').toLowerCase().replace(/[^a-z]/g, '');
+    if (diagnosisKey === 'healthy') diagnosisKey = 'sehat';
     if (diagnosisKey.includes('brown')) diagnosisKey = 'brownspot';
     if (!DIAGNOSIS_CLASSES.includes(diagnosisKey)) {
       diagnosisKey = 'unknown'; // Fallback jika model mengembalikan nilai di luar kelas yang diketahui
