@@ -189,7 +189,7 @@ export default function Landing() {
               </div>
               <div className="hero-stat">
                 <div className="num">4</div>
-                <div className="lbl">Kelas</div>
+                <div className="lbl">kategori</div>
               </div>
             </div>
           </div>
