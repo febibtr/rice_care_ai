@@ -7,7 +7,7 @@ Dibuat oleh Tim Data Scientist CC26-PSU169 | Coding Camp 2026 × DBS Foundation.
 
 ## Struktur Proyek
 Data Science/
-├── eda.ipynb
+├── cleaning_eda_data.ipynb  
 ├── dashboard_capstone.py   
 ├── requirements.txt  
 └── readme.md
@@ -35,7 +35,7 @@ https://drive.google.com/drive/folders/1ZNjzVXgtZV9VxqxRS1ZBTr0iPlNkolkm
 
 ---
 
-## Menjalankan Dashboard
+## Run Streamlit App
 
 ```bash
 streamlit run dashboard/dashboard_capstone.py
@@ -68,5 +68,3 @@ streamlit run dashboard/dashboard_capstone.py
 - Rifa Agnia (CDC001D6X1252)
 - Nisa Nuraini (CDC004D6X2390)
 
-
-## 📦 Req
