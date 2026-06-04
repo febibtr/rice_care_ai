@@ -8,8 +8,8 @@ Dibuat oleh Tim Data Scientist CC26-PSU169 | Coding Camp 2026 × DBS Foundation.
 ## Struktur Proyek
 Data Science/           
 ├── cleaning_eda_data.ipynb  
-├── dashboard_capstone.py
-├── README.md
+├── dashboard_capstone.py  
+├── README.md  
 ├── requirements.txt  
 └── url_dashboard.txt
 
