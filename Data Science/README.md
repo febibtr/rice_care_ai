@@ -7,7 +7,6 @@ Dibuat oleh Tim Data Scientist CC26-PSU169 | Coding Camp 2026 × DBS Foundation.
 
 ## Struktur Proyek
 Data Science/           
-
 ├── cleaning_eda_data.ipynb  
 ├── dashboard_capstone.py   
 ├── requirements.txt  
@@ -46,7 +45,7 @@ streamlit run dashboard/dashboard_capstone.py
 
 ## Fitur Dashboard
 
-- **Overview & Data Dictionary**: Ringkasan proyek, kamus data, dan penjelasan tiap kelas penyakit
+- **Overview & Data Dictionary**: Ringkasan proyek dan penjelasan tiap kelas penyakit
 - **Visualisasi EDA**: Distribusi dataset, perbandingan train vs test, before/after augmentasi, mean image per kelas, dan distribusi RGB
 - **Galeri Sampel Gambar**: Menampilkan sampel gambar acak per kelas dengan jumlah yang dapat disesuaikan
 
