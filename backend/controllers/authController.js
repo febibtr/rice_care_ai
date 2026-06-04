@@ -30,21 +30,11 @@ const register = async (req, res, next) => {
 
     const user = await User.create({ name, email, password });
 
-    const payload = { userId: user._id };
-    const accessToken = generateAccessToken(payload);
-    const refreshToken = generateRefreshToken(payload);
-
-    // Simpan refresh token ke DB
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-
     logger.info(`New user registered: ${email}`);
 
     return createdResponse(res, {
       user: user.toPublicJSON(),
-      accessToken,
-      refreshToken,
-    }, 'Registrasi berhasil');
+    }, 'Registrasi berhasil, silakan login untuk melanjutkan');
   } catch (error) {
     next(error);
   }
@@ -110,7 +100,7 @@ const refreshToken = async (req, res, next) => {
     }
 
     const user = await User.findById(decoded.userId).select('+refreshToken');
-    if (!user || user.refreshToken !== token) {
+    if (!user || !user.isActive || user.refreshToken !== token) {
       return unauthorizedResponse(res, 'Refresh token tidak valid');
     }
 

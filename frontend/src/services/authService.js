@@ -2,7 +2,6 @@ import api, { clearAuth } from './api';
 
 export const register = async ({ name, email, password }) => {
   const { data } = await api.post('/auth/register', { name, email, password });
-  saveSession(data.data);
   return data.data;
 };
 

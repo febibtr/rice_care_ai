@@ -1,6 +1,6 @@
 const Scan = require('../models/Scan');
 const User = require('../models/User');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const {
   successResponse,
@@ -62,8 +62,12 @@ const createScan = async (req, res, next) => {
   } catch (error) {
     // Hapus file yang sudah terupload jika gagal
     if (req.file) {
-      const filePath = path.join(process.env.UPLOAD_PATH || './uploads', req.file.filename);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      try {
+        const filePath = path.join(process.env.UPLOAD_PATH || './uploads', req.file.filename);
+        await fs.unlink(filePath);
+      } catch (unlinkError) {
+        logger.error(`Failed to delete file: ${unlinkError.message}`);
+      }
     }
     next(error);
   }

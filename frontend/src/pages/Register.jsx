@@ -21,14 +21,32 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ name: form.name, email: form.email, password: form.password });
-      navigate('/');
+      // Memberikan jeda 2 detik agar animasi loading terlihat sebelum pindah ke login
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Registrasi gagal, coba lagi.');
-    } finally { setLoading(false); }
+      setLoading(false);
+    }
   };
 
   return (
     <div className="auth-layout">
+      {/* Fullscreen Loading Overlay */}
+      {loading && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(4px)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', zIndex: 9999
+        }}>
+          <div className="spinner-border text-success" style={{ width: '3.5rem', height: '3.5rem' }} role="status"></div>
+          <h4 style={{ marginTop: '20px', color: '#16a34a', fontWeight: '700' }}>Memproses Pendaftaran...</h4>
+          <p style={{ color: '#666' }}>Mohon tunggu sebentar, akun Anda sedang disiapkan.</p>
+        </div>
+      )}
+
       <div className="auth-cover" style={{ backgroundImage: `linear-gradient(rgba(7,35,19,.72),rgba(7,35,19,.72)),url(${farmBg})` }}>
         <div style={{marginBottom:'auto',paddingTop:48}}>
           <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.1)',border:'1px solid rgba(255,255,255,.2)',borderRadius:999,padding:'6px 14px',color:'rgba(255,255,255,.8)',fontSize:13,fontWeight:700}}>
