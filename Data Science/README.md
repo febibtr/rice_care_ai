@@ -10,7 +10,7 @@ Data Science/
 ├── cleaning_eda_data.ipynb  
 ├── dashboard_capstone.py   
 ├── requirements.txt  
-└── readme.md
+└── README.md
 
 ---
 
