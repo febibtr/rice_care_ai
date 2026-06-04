@@ -47,7 +47,7 @@ streamlit run dashboard/dashboard_capstone.py
 ## Dashboard Features
 
 - **Overview & Data Dictionary**: Ringkasan proyek dan penjelasan tiap kelas penyakit
-- **Visualisasi EDA**: Distribusi dataset, perbandingan train vs test, before/after augmentasi, mean image per kelas, dan distribusi RGB
+- **Visualisasi EDA**: Distribusi dataset, perbandingan train vs test, sebelum dan sesudah augmentasi, gambar tipikal per kelas, dan distribusi RGB
 - **Galeri Sampel Gambar**: Menampilkan sampel gambar acak per kelas dengan jumlah yang dapat disesuaikan
 
 ---
