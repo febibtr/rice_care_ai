@@ -21,13 +21,6 @@ Coba langsung sistem deteksi penyakit padi kami melalui link di bawah ini:
 ## 🎯 **Tentang Proyek**
 **RiceCare AI** adalah sistem pendukung keputusan yang dirancang untuk membantu petani dan penyuluh pertanian mendeteksi penyakit pada tanaman padi lebih dini. Dengan teknologi AI, deteksi yang dulunya sulit, kini dapat dilakukan hanya dengan satu foto. Dibuat oleh **Tim CC26-PSU169**
 
-## 🧠 **Pemodelan & Arsitektur AI**
-Sistem ini menggunakan algoritma **Convolutional Neural Network (CNN)** sebagai basis pengenalan pola citra. Proses ini melibatkan **ekstraksi fitur otomatis** di mana model mempelajari karakteristik visual (seperti tekstur bercak dan pola perubahan warna) dari daun padi untuk membedakan kategori penyakit.
-
-Untuk arsitektur spesifiknya, kami menggunakan **MobileNetV2**:
-* **Mengapa MobileNetV2?** Arsitektur ini dioptimalkan untuk efisiensi komputasi. MobileNetV2 mampu melakukan ekstraksi fitur yang mendalam dengan bobot model yang jauh lebih ringan dibanding arsitektur CNN standar, sehingga aplikasi dapat berjalan cepat pada perangkat dengan sumber daya terbatas.
-* **Klasifikasi Penyakit:** Model dilatih untuk mengenali : **Blast**, **Brown Spot**, **Healthy**, dan **Tungro**.
-
 ## 🛠 **Teknologi yang Digunakan**
 * **Deep Learning Engine:** `TensorFlow` & `MobileNetV2`
 * **Web Interface:** `Gradio`
