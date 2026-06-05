@@ -18,24 +18,6 @@ Coba langsung sistem deteksi penyakit padi kami melalui link di bawah ini:
 
 ---
 
-
-## Cara Instalasi & Menjalankan Aplikasi
-
-### 1. Persiapan Awal
-Pastikan perangkat Anda telah terinstal **Python 3.9+** dan memiliki akses internet untuk mengunduh pustaka yang diperlukan.
-
-### 2. Instalasi Dependensi
-Buka terminal dan jalankan perintah berikut untuk menginstal semua pustaka yang dibutuhkan:
-
-```bash
-# Membuat virtual environment 
-python -m venv venv
-source venv/bin/activate  # Untuk Windows gunakan: venv\Scripts\activate
-
-# Instalasi library
-pip install -r requirements.txt
-
-
 ## 🎯 **Tentang Proyek**
 **RiceCare AI** adalah sistem pendukung keputusan yang dirancang untuk membantu petani dan penyuluh pertanian mendeteksi penyakit pada tanaman padi lebih dini. Dengan teknologi AI, deteksi yang dulunya sulit, kini dapat dilakukan hanya dengan satu foto. Dibuat oleh **Tim CC26-PSU169**
 
