@@ -8,7 +8,7 @@ Dibuat oleh Tim Data Scientist CC26-PSU169 | Coding Camp 2026 × DBS Foundation.
 ## Structure
 Data Science/           
 ├── cleaning_eda_data.ipynb    
-├── cleaning_eda_data    
+├── cleaning_eda_data.pdf      
 ├── dashboard_capstone.py    
 ├── laporan_komprehensif_ds.pdf    
 ├── README.md  
