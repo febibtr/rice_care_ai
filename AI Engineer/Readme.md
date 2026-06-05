@@ -16,6 +16,9 @@
 Coba langsung sistem deteksi penyakit padi kami melalui link di bawah ini:
 👉 **[Klik Di Sini untuk Buka RiceCare AI di Hugging Face](https://egott-ricecareai.hf.space/docs)**
 
+---
+
+
 ## Cara Instalasi & Menjalankan Aplikasi
 
 ### 1. Persiapan Awal
@@ -32,7 +35,6 @@ source venv/bin/activate  # Untuk Windows gunakan: venv\Scripts\activate
 # Instalasi library
 pip install -r requirements.txt
 
----
 
 ## 🎯 **Tentang Proyek**
 **RiceCare AI** adalah sistem pendukung keputusan yang dirancang untuk membantu petani dan penyuluh pertanian mendeteksi penyakit pada tanaman padi lebih dini. Dengan teknologi AI, deteksi yang dulunya sulit, kini dapat dilakukan hanya dengan satu foto. Dibuat oleh **Tim CC26-PSU169**
