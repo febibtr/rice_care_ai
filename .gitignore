@@ -1,11 +1,17 @@
-# Ignore frontend dependencies
+# Frontend
 /frontend/node_modules
+/frontend/dist/
+/frontend/build/
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/.eslintcache
 
-# Ignore backend dependencies
+# Backend
 /backend/node_modules
-
-# Backend environment and uploads
 /backend/.env
+/backend/.env.local
+/backend/.env.*.local
 /backend/uploads/*
 !/backend/uploads/.gitkeep
 /backend/logs/
