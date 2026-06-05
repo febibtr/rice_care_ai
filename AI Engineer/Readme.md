@@ -16,6 +16,22 @@
 Coba langsung sistem deteksi penyakit padi kami melalui link di bawah ini:
 👉 **[Klik Di Sini untuk Buka RiceCare AI di Hugging Face](https://egott-ricecareai.hf.space/docs)**
 
+## Cara Instalasi & Menjalankan Aplikasi
+
+### 1. Persiapan Awal
+Pastikan perangkat Anda telah terinstal **Python 3.9+** dan memiliki akses internet untuk mengunduh pustaka yang diperlukan.
+
+### 2. Instalasi Dependensi
+Buka terminal dan jalankan perintah berikut untuk menginstal semua pustaka yang dibutuhkan:
+
+```bash
+# Membuat virtual environment 
+python -m venv venv
+source venv/bin/activate  # Untuk Windows gunakan: venv\Scripts\activate
+
+# Instalasi library
+pip install -r requirements.txt
+
 ---
 
 ## 🎯 **Tentang Proyek**
@@ -29,7 +45,7 @@ Coba langsung sistem deteksi penyakit padi kami melalui link di bawah ini:
 ## 📊 **Alur Kerja (Workflow)**
 1. **Input:** User mengunggah gambar daun padi.
 2. **Preprocessing:** Gambar di-*resize* ke $224 \times 224$ piksel dan dinormalisasi.
-3. **Inference:** Model menganalisis fitur gambar menggunakan CNN.
+3. **Inference:** Model menganalisis fitur gambar menggunakan Deep Learning CNN arsitektur MobileNetV2.
 4. **Output:** Hasil prediksi penyakit beserta tingkat akurasi (*confidence score*).
 
 ## 🚀 **Status Proyek**
