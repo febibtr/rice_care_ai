@@ -41,8 +41,6 @@ Untuk arsitektur spesifiknya, kami menggunakan **MobileNetV2**:
 
 ## 🚀 **Status Proyek**
 - [x] Training Model AI
-- [x] Backend Development
-- [x] Frontend Development
 - [x] Deployment to Hugging Face
 
 ## 👨‍💻 **Kontributor**
