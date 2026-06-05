@@ -1,6 +1,6 @@
 #  RiceCare AI - Exploratory Data Analysis Dashboard
 
-Exploratory Data Analysis Dashboard untuk proyek deteksi penyakit daun padi menggunakan Deep Learning (MobileNetV2).
+Exploratory Data Analysis Dashboard berfungsi untuk menguraikan kondisi dataset yang nantinya akan menjadi fondasi dalam melatih model MobileNetV2 untuk mendeteksi penyakit daun padi.
 Dibuat oleh Tim Data Scientist CC26-PSU169 | Coding Camp 2026 × DBS Foundation.
 
 ---
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 ---
 
-## Dataset
+## Dataset (Unzip)
 
 ```bash
 https://drive.google.com/drive/folders/1ZNjzVXgtZV9VxqxRS1ZBTr0iPlNkolkm
@@ -47,8 +47,8 @@ streamlit run dashboard/dashboard_capstone.py
 ## Dashboard Features
 
 - **Overview & Data Dictionary**: Ringkasan proyek dan penjelasan tiap kelas penyakit
-- **Visualisasi EDA**: Distribusi dataset, perbandingan train vs test, sebelum dan sesudah augmentasi, gambar tipikal per kelas, dan distribusi RGB
-- **Galeri Sampel Gambar**: Menampilkan sampel gambar acak per kelas dengan jumlah yang dapat disesuaikan
+- **Explore & Explain Data**: Terdiri dari distribusi dataset, perbandingan train vs test, kondisi dataset sebelum dan sesudah augmentasi, gambar tipikal per kelas, dan distribusi RGB pada kelas penyakit
+- **Image Samples**: Menampilkan sampel gambar acak per kelas dengan jumlah yang dapat disesuaikan
 
 ---
 
