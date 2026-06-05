@@ -36,8 +36,8 @@
 
 ## 👨‍💻 **Kontributor**
 Dibuat oleh Tim AI:
-**Fransiskus Wutuk(CACC611D6Y1186)** untuk **Coding Camp 2026**
-**Wega Pratiwi(CACC432D6X1217)** untuk **Coding Camp 2026**
+* **Fransiskus Wutuk(CACC611D6Y1186)** untuk **Coding Camp 2026**
+* **Wega Pratiwi(CACC432D6X1217)** untuk **Coding Camp 2026**
 
 ---
-*Dibuat dengan semangat untuk ketahanan pangan Indonesia!* 🇮🇩
+*Dibuat dengan semangat untuk ketahanan pangan Indonesia!*
