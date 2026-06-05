@@ -27,41 +27,18 @@ Aplikasi ini terintegrasi dengan model AI yang dideploy di Hugging Face Spaces.
 
 ---
 
-## ⚙️ Konfigurasi Environment
-
-Anda perlu membuat file `.env` di folder `backend` dan `frontend` sebelum menjalankan aplikasi.
-
-### Backend (`/backend/.env`)
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/rice_care_ai
-NODE_ENV=development
-
-# JWT Secret
-JWT_ACCESS_SECRET=your_super_secret_access_key
-JWT_REFRESH_SECRET=your_super_secret_refresh_key
-
-# CORS (URL Frontend)
-FRONTEND_URL=http://localhost:5173,http://localhost:3000
-
-# Rate Limiter
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX=100
-```
-
-### Frontend (`/frontend/.env`)
-```env
-VITE_API_URL=http://localhost:5000/api/v1
-```
-
----
-
 ## 🛠️ Cara Instalasi & Menjalankan Aplikasi
 
-### 1. Persiapan Awal
+### 1. Clone Repositori
+```bash
+git clone https://github.com/username/rice_care_ai.git
+cd rice_care_ai
+```
+
+### 2. Persiapan Awal
 Pastikan Anda sudah menginstal **Node.js** dan **MongoDB** di perangkat Anda.
 
-### 2. Instalasi Dependensi
+### 3. Instalasi Dependensi
 Buka terminal dan jalankan perintah berikut di masing-masing direktori:
 
 **Backend:**
